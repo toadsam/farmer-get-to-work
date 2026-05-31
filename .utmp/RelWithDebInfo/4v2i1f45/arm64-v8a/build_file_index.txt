@@ -1,0 +1,2 @@
+C:\GithubTemp\farmer-get-to-work\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\GithubTemp\farmer-get-to-work\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
