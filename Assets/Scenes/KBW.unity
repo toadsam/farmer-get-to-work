@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: c6ad65bfc3a1de043afd7ce9e41e1f58, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -2670,7 +2670,7 @@ MonoBehaviour:
   mouseRotationSpeed: 0.25
   rotateStartThreshold: 18
   enableZoom: 1
-  minOrthographicSize: 7
+  minOrthographicSize: 10
   maxOrthographicSize: 20
   mouseWheelZoomSpeed: 1.2
   pinchZoomSpeed: 0.01
@@ -6551,7 +6551,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
