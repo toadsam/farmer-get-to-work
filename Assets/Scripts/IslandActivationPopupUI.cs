@@ -97,13 +97,13 @@ public class IslandActivationPopupUI : MonoBehaviour
             return;
 
         if (titleText != null)
-            titleText.text = $"{currentIsland.displayName} È°¼ºÈ­";
+            titleText.text = $"{currentIsland.displayName} í™œì„±í™”";
 
         if (descriptionText != null)
-            descriptionText.text = "ÀÌ ¼¶À» È°¼ºÈ­ÇÏ¸é ¹ç°ú °Ç¹°, µ¿¹°, Àå½ÄÀÌ ³ªÅ¸³³´Ï´Ù.";
+            descriptionText.text = "ì´ ì„¬ì„ í™œì„±í™”í•˜ë©´ ë°­ê³¼ ê±´ë¬¼, ë™ë¬¼, ì¥ì‹ì´ ë‚˜íƒ€ë‚©ë‹ˆë‹¤.";
 
         if (costText != null)
-            costText.text = $"ÇÊ¿ä °ñµå: {currentIsland.activationGoldCost}";
+            costText.text = $"í•„ìš” ê³¨ë“œ: {currentIsland.activationGoldCost}";
 
         bool canActivate = currentIsland.CanActivate(farmManager, out string reason);
 
@@ -127,7 +127,7 @@ public class IslandActivationPopupUI : MonoBehaviour
 
         if (islandSetManager == null)
         {
-            SetMessage("IslandSetManager°¡ ¾ø½À´Ï´Ù.");
+            SetMessage("IslandSetManagerê°€ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 
@@ -140,7 +140,7 @@ public class IslandActivationPopupUI : MonoBehaviour
         else
         {
             Refresh();
-            SetMessage("¼¶À» È°¼ºÈ­ÇÏÁö ¸øÇß½À´Ï´Ù.");
+            SetMessage("ì„¬ì„ í™œì„±í™”í•˜ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.");
         }
     }
 

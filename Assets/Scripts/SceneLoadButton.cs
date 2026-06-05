@@ -22,7 +22,7 @@ public class SceneLoadButton : MonoBehaviour
     [Header("Target")]
     public GameSceneTarget targetScene;
 
-    [Tooltip("Target SceneÀÌ CustomÀÏ ¶§¸¸ »ç¿ëÇÕ´Ï´Ù.")]
+    [Tooltip("Target Sceneì´ Customì¼ ë•Œë§Œ ì‚¬ìš©í•©ë‹ˆë‹¤.")]
     public string customSceneName;
 
     [Header("Button")]
@@ -53,7 +53,7 @@ public class SceneLoadButton : MonoBehaviour
 
         if (flow == null)
         {
-            Debug.LogError("[SceneLoadButton] SceneFlowManager.Instance°¡ ¾ø½À´Ï´Ù.");
+            Debug.LogError("[SceneLoadButton] SceneFlowManager.Instanceê°€ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 

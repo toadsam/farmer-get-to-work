@@ -13,7 +13,7 @@ public class IslandSetController : MonoBehaviour
 {
     [Header("Island Info")]
     public string islandId = "Island_01";
-    public string displayName = "»õ·Î¿î ¼¶";
+    public string displayName = "ìƒˆë¡œìš´ ì„¬";
 
     [Header("Unlock / Activation")]
     public int requiredUnlockProgress = 100;
@@ -26,21 +26,21 @@ public class IslandSetController : MonoBehaviour
     public int growthPoints;
 
     [Header("Visual Roots")]
-    [Tooltip("¾ÆÁ÷ ÇØ±İµÇÁö ¾Ê¾ÒÀ» ¶§ º¸ÀÏ ¿ÀºêÁ§Æ®ÀÔ´Ï´Ù.")]
+    [Tooltip("ì•„ì§ í•´ê¸ˆë˜ì§€ ì•Šì•˜ì„ ë•Œ ë³´ì¼ ì˜¤ë¸Œì íŠ¸ì…ë‹ˆë‹¤.")]
     public GameObject lockedRoot;
 
-    [Tooltip("ÇØ±İÀº µÇ¾úÁö¸¸ ¾ÆÁ÷ °ñµå·Î È°¼ºÈ­ÇÏÁö ¾ÊÀº ºó ¼¶ ¿ÀºêÁ§Æ®ÀÔ´Ï´Ù.")]
+    [Tooltip("í•´ê¸ˆì€ ë˜ì—ˆì§€ë§Œ ì•„ì§ ê³¨ë“œë¡œ í™œì„±í™”í•˜ì§€ ì•Šì€ ë¹ˆ ì„¬ ì˜¤ë¸Œì íŠ¸ì…ë‹ˆë‹¤.")]
     public GameObject emptyRoot;
 
-    [Tooltip("°ñµå·Î È°¼ºÈ­µÈ µÚ º¸ÀÏ ¼¶ ÀüÃ¼ ·çÆ®ÀÔ´Ï´Ù.")]
+    [Tooltip("ê³¨ë“œë¡œ í™œì„±í™”ëœ ë’¤ ë³´ì¼ ì„¬ ì „ì²´ ë£¨íŠ¸ì…ë‹ˆë‹¤.")]
     public GameObject activatedRoot;
 
     [Header("Activated Contents")]
-    [Tooltip("¼¶ È°¼ºÈ­ ½Ã °°ÀÌ ÄÑÁú ¹ç, µ¿¹°, °Ç¹°, Àå½Ä ¿ÀºêÁ§Æ®µéÀÔ´Ï´Ù.")]
+    [Tooltip("ì„¬ í™œì„±í™” ì‹œ ê°™ì´ ì¼œì§ˆ ë°­, ë™ë¬¼, ê±´ë¬¼, ì¥ì‹ ì˜¤ë¸Œì íŠ¸ë“¤ì…ë‹ˆë‹¤.")]
     public List<GameObject> activationTargets = new List<GameObject>();
 
     [Header("Crop Plots In This Island")]
-    [Tooltip("ÀÌ ¼¶¿¡ Æ÷ÇÔµÈ CropPlotµéÀÔ´Ï´Ù. Ãß°¡ ¼¶ÀÇ ¹çÀº FarmManager°¡ ¾Æ´Ï¶ó ¿©±â¿¡ ³Ö´Â °ÍÀ» ±ÇÀåÇÕ´Ï´Ù.")]
+    [Tooltip("ì´ ì„¬ì— í¬í•¨ëœ CropPlotë“¤ì…ë‹ˆë‹¤. ì¶”ê°€ ì„¬ì˜ ë°­ì€ FarmManagerê°€ ì•„ë‹ˆë¼ ì—¬ê¸°ì— ë„£ëŠ” ê²ƒì„ ê¶Œì¥í•©ë‹ˆë‹¤.")]
     public List<CropPlot> cropPlots = new List<CropPlot>();
 
     [Header("Auto Collect")]
@@ -110,7 +110,7 @@ public class IslandSetController : MonoBehaviour
             unlocked = true;
             ApplyVisualState();
 
-            Debug.Log($"[IslandSet] ¼¶ ÇØ±İ: {displayName}");
+            Debug.Log($"[IslandSet] ì„¬ í•´ê¸ˆ: {displayName}");
             return true;
         }
 
@@ -122,25 +122,25 @@ public class IslandSetController : MonoBehaviour
     {
         if (!unlocked)
         {
-            reason = "¾ÆÁ÷ ÇØ±İµÇÁö ¾ÊÀº ¼¶ÀÔ´Ï´Ù.";
+            reason = "ì•„ì§ í•´ê¸ˆë˜ì§€ ì•Šì€ ì„¬ì…ë‹ˆë‹¤.";
             return false;
         }
 
         if (activated)
         {
-            reason = "ÀÌ¹Ì È°¼ºÈ­µÈ ¼¶ÀÔ´Ï´Ù.";
+            reason = "ì´ë¯¸ í™œì„±í™”ëœ ì„¬ì…ë‹ˆë‹¤.";
             return false;
         }
 
         if (farmManager == null)
         {
-            reason = "FarmManager°¡ ¾ø½À´Ï´Ù.";
+            reason = "FarmManagerê°€ ì—†ìŠµë‹ˆë‹¤.";
             return false;
         }
 
         if (farmManager.gold < activationGoldCost)
         {
-            reason = $"°ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù. ÇÊ¿ä °ñµå: {activationGoldCost}";
+            reason = $"ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤. í•„ìš” ê³¨ë“œ: {activationGoldCost}";
             return false;
         }
 
@@ -152,7 +152,7 @@ public class IslandSetController : MonoBehaviour
     {
         if (!CanActivate(farmManager, out string reason))
         {
-            Debug.LogWarning($"[IslandSet] È°¼ºÈ­ ½ÇÆĞ / {displayName}: {reason}", this);
+            Debug.LogWarning($"[IslandSet] í™œì„±í™” ì‹¤íŒ¨ / {displayName}: {reason}", this);
             return false;
         }
 
@@ -160,7 +160,7 @@ public class IslandSetController : MonoBehaviour
 
         ActivateWithoutCost();
 
-        Debug.Log($"[IslandSet] ¼¶ È°¼ºÈ­ ¿Ï·á: {displayName}, Gold -{activationGoldCost}");
+        Debug.Log($"[IslandSet] ì„¬ í™œì„±í™” ì™„ë£Œ: {displayName}, Gold -{activationGoldCost}");
         return true;
     }
 
@@ -289,7 +289,7 @@ public class IslandSetController : MonoBehaviour
 
         ApplyVisualState();
 
-        Debug.Log($"[IslandSet] ÃÊ±âÈ­ ¿Ï·á: {displayName}");
+        Debug.Log($"[IslandSet] ì´ˆê¸°í™” ì™„ë£Œ: {displayName}");
     }
 
     [ContextMenu("Test Unlock")]

@@ -6,24 +6,24 @@ public class FocusSessionResultProcessor : MonoBehaviour
     public UnlockManager unlockManager;
 
     [Header("Reward Rules")]
-    [Tooltip("ÀÌ ½Ã°£ ¹Ì¸¸ÀÇ ¼¼¼ÇÀº º¸»óÀ» Áö±ŞÇÏÁö ¾Ê½À´Ï´Ù.")]
+    [Tooltip("ì´ ì‹œê°„ ë¯¸ë§Œì˜ ì„¸ì…˜ì€ ë³´ìƒì„ ì§€ê¸‰í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.")]
     public int minRewardMinutes = 10;
 
-    [Tooltip("ÁıÁß 1ºĞ´ç ÀÛ¹° ¼ºÀå·®ÀÔ´Ï´Ù.")]
+    [Tooltip("ì§‘ì¤‘ 1ë¶„ë‹¹ ì‘ë¬¼ ì„±ì¥ëŸ‰ì…ë‹ˆë‹¤.")]
     public int growthPerMinute = 4;
 
-    [Tooltip("ÁıÁß 1ºĞ´ç ÇØ±İ ÁøÇàµµÀÔ´Ï´Ù.")]
+    [Tooltip("ì§‘ì¤‘ 1ë¶„ë‹¹ í•´ê¸ˆ ì§„í–‰ë„ì…ë‹ˆë‹¤.")]
     public int unlockProgressPerMinute = 2;
 
     [Header("Exit Penalty Rules")]
-    [Tooltip("ÀÌÅ» ½Ã°£ÀÌ ÀÌ °ª ÀÌÇÏÀÌ¸é ÆĞ³ÎÆ¼°¡ ¾ø½À´Ï´Ù.")]
+    [Tooltip("ì´íƒˆ ì‹œê°„ì´ ì´ ê°’ ì´í•˜ì´ë©´ íŒ¨ë„í‹°ê°€ ì—†ìŠµë‹ˆë‹¤.")]
     public float shortExitGraceSeconds = 30f;
 
-    [Tooltip("ÀÌÅ» ½Ã°£ÀÌ ÀÌ °ª ÀÌ»óÀÌ¸é ¼¼¼Ç ½ÇÆĞ·Î Ã³¸®ÇÕ´Ï´Ù.")]
+    [Tooltip("ì´íƒˆ ì‹œê°„ì´ ì´ ê°’ ì´ìƒì´ë©´ ì„¸ì…˜ ì‹¤íŒ¨ë¡œ ì²˜ë¦¬í•©ë‹ˆë‹¤.")]
     public float failExitSeconds = 180f;
 
     [Range(0f, 1f)]
-    [Tooltip("ÂªÀº Çã¿ë ½Ã°£À» ³Ñ°åÁö¸¸ ½ÇÆĞ ±âÁØ ¹Ì¸¸ÀÏ ¶§ Áö±ŞÇÒ º¸»ó ºñÀ²ÀÔ´Ï´Ù.")]
+    [Tooltip("ì§§ì€ í—ˆìš© ì‹œê°„ì„ ë„˜ê²¼ì§€ë§Œ ì‹¤íŒ¨ ê¸°ì¤€ ë¯¸ë§Œì¼ ë•Œ ì§€ê¸‰í•  ë³´ìƒ ë¹„ìœ¨ì…ë‹ˆë‹¤.")]
     public float reducedRewardMultiplier = 0.7f;
 
     private void Awake()
@@ -36,7 +36,7 @@ public class FocusSessionResultProcessor : MonoBehaviour
     {
         if (result == null)
         {
-            Debug.LogWarning("[FocusResult] result°¡ nullÀÔ´Ï´Ù.", this);
+            Debug.LogWarning("[FocusResult] resultê°€ nullì…ë‹ˆë‹¤.", this);
             return;
         }
 
@@ -73,7 +73,7 @@ public class FocusSessionResultProcessor : MonoBehaviour
 
         if (FarmManager.Instance == null)
         {
-            Debug.LogError("[FocusResult] FarmManager.Instance°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogError("[FocusResult] FarmManager.Instanceê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -85,14 +85,14 @@ public class FocusSessionResultProcessor : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[FocusResult] UnlockManager°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusResult] UnlockManagerê°€ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.", this);
         }
 
         Debug.Log(
-            $"[FocusResult] ¼º°ø Ã³¸® ¿Ï·á / ¸ñÇ¥: {result.goalName}, " +
-            $"ÁıÁß ½Ã°£: {result.focusedMinutes}ºĞ, ¼ºÀå·®: +{growth}, " +
-            $"ÇØ±İ ÁøÇàµµ: +{unlockProgress}, " +
-            $"ÀÌÅ» È½¼ö: {result.exitCount}, ÀÌÅ» ½Ã°£: {result.totalExitSeconds:F1}ÃÊ"
+            $"[FocusResult] ì„±ê³µ ì²˜ë¦¬ ì™„ë£Œ / ëª©í‘œ: {result.goalName}, " +
+            $"ì§‘ì¤‘ ì‹œê°„: {result.focusedMinutes}ë¶„, ì„±ì¥ëŸ‰: +{growth}, " +
+            $"í•´ê¸ˆ ì§„í–‰ë„: +{unlockProgress}, " +
+            $"ì´íƒˆ íšŸìˆ˜: {result.exitCount}, ì´íƒˆ ì‹œê°„: {result.totalExitSeconds:F1}ì´ˆ"
         );
     }
 
@@ -113,9 +113,9 @@ public class FocusSessionResultProcessor : MonoBehaviour
     private void ApplyFailure(FocusSessionResult result)
     {
         Debug.Log(
-            $"[FocusResult] ½ÇÆĞ Ã³¸® / ¸ñÇ¥: {result.goalName}, " +
-            $"ÁıÁß ½Ã°£: {result.focusedMinutes}ºĞ, " +
-            $"ÀÌÅ» È½¼ö: {result.exitCount}, ÀÌÅ» ½Ã°£: {result.totalExitSeconds:F1}ÃÊ"
+            $"[FocusResult] ì‹¤íŒ¨ ì²˜ë¦¬ / ëª©í‘œ: {result.goalName}, " +
+            $"ì§‘ì¤‘ ì‹œê°„: {result.focusedMinutes}ë¶„, " +
+            $"ì´íƒˆ íšŸìˆ˜: {result.exitCount}, ì´íƒˆ ì‹œê°„: {result.totalExitSeconds:F1}ì´ˆ"
         );
     }
 
@@ -125,7 +125,7 @@ public class FocusSessionResultProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "¼öÇĞ °øºÎ",
+            goalName = "ìˆ˜í•™ ê³µë¶€",
             plannedMinutes = 10,
             focusedMinutes = 10,
             success = true,
@@ -142,7 +142,7 @@ public class FocusSessionResultProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "¿µ¾î ´Ü¾î ¾Ï±â",
+            goalName = "ì˜ì–´ ë‹¨ì–´ ì•”ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 30,
             success = true,
@@ -159,7 +159,7 @@ public class FocusSessionResultProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Reading",
-            goalName = "µ¶¼­ÇÏ±â",
+            goalName = "ë…ì„œí•˜ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 30,
             success = true,
@@ -176,7 +176,7 @@ public class FocusSessionResultProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "ÂªÀº °øºÎ",
+            goalName = "ì§§ì€ ê³µë¶€",
             plannedMinutes = 5,
             focusedMinutes = 5,
             success = true,
@@ -193,7 +193,7 @@ public class FocusSessionResultProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Exercise",
-            goalName = "¿îµ¿ÇÏ±â",
+            goalName = "ìš´ë™í•˜ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 30,
             success = true,

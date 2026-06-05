@@ -13,43 +13,43 @@ public class RewardProcessor : MonoBehaviour
     public FocusMusicPlayer focusMusicPlayer;
 
     [Header("Reward Rules")]
-    [Tooltip("ÀÌ ½Ã°£ ¹Ì¸¸ÀÇ ¼¼¼ÇÀº º¸»óÀ» Áö±ŞÇÏÁö ¾Ê½À´Ï´Ù.")]
+    [Tooltip("ì´ ì‹œê°„ ë¯¸ë§Œì˜ ì„¸ì…˜ì€ ë³´ìƒì„ ì§€ê¸‰í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.")]
     public int minRewardMinutes = 10;
 
-    [Tooltip("ÁıÁß 1ºĞ´ç ÀÛ¹° ¼ºÀå·®ÀÔ´Ï´Ù.")]
+    [Tooltip("ì§‘ì¤‘ 1ë¶„ë‹¹ ì‘ë¬¼ ì„±ì¥ëŸ‰ì…ë‹ˆë‹¤.")]
     public int growthPerMinute = 4;
 
-    [Tooltip("ÁıÁß 1ºĞ´ç ÇØ±İ ÁøÇàµµÀÔ´Ï´Ù.")]
+    [Tooltip("ì§‘ì¤‘ 1ë¶„ë‹¹ í•´ê¸ˆ ì§„í–‰ë„ì…ë‹ˆë‹¤.")]
     public int unlockProgressPerMinute = 2;
 
-    [Tooltip("ÇöÀç´Â ±âº» 0ÀÔ´Ï´Ù. ³ªÁß¿¡ ¼¼¼Ç ¼º°ø °ñµå º¸»óÀÌ ÇÊ¿äÇÏ¸é »ç¿ëÇÕ´Ï´Ù.")]
+    [Tooltip("í˜„ì¬ëŠ” ê¸°ë³¸ 0ì…ë‹ˆë‹¤. ë‚˜ì¤‘ì— ì„¸ì…˜ ì„±ê³µ ê³¨ë“œ ë³´ìƒì´ í•„ìš”í•˜ë©´ ì‚¬ìš©í•©ë‹ˆë‹¤.")]
     public int goldPerMinute = 0;
 
     [Header("Exit Penalty Rules")]
-    [Tooltip("ÀÌÅ» ½Ã°£ÀÌ ÀÌ °ª ÀÌÇÏÀÌ¸é ÆĞ³ÎÆ¼°¡ ¾ø½À´Ï´Ù.")]
+    [Tooltip("ì´íƒˆ ì‹œê°„ì´ ì´ ê°’ ì´í•˜ì´ë©´ íŒ¨ë„í‹°ê°€ ì—†ìŠµë‹ˆë‹¤.")]
     public float shortExitGraceSeconds = 30f;
 
-    [Tooltip("ÀÌÅ» ½Ã°£ÀÌ ÀÌ °ª ÀÌ»óÀÌ¸é ¼¼¼Ç ½ÇÆĞ·Î Ã³¸®ÇÕ´Ï´Ù.")]
+    [Tooltip("ì´íƒˆ ì‹œê°„ì´ ì´ ê°’ ì´ìƒì´ë©´ ì„¸ì…˜ ì‹¤íŒ¨ë¡œ ì²˜ë¦¬í•©ë‹ˆë‹¤.")]
     public float failExitSeconds = 180f;
 
     [Range(0f, 1f)]
-    [Tooltip("ÂªÀº Çã¿ë ½Ã°£À» ³Ñ°åÁö¸¸ ½ÇÆĞ ±âÁØ ¹Ì¸¸ÀÏ ¶§ Áö±ŞÇÒ º¸»ó ºñÀ²ÀÔ´Ï´Ù.")]
+    [Tooltip("ì§§ì€ í—ˆìš© ì‹œê°„ì„ ë„˜ê²¼ì§€ë§Œ ì‹¤íŒ¨ ê¸°ì¤€ ë¯¸ë§Œì¼ ë•Œ ì§€ê¸‰í•  ë³´ìƒ ë¹„ìœ¨ì…ë‹ˆë‹¤.")]
     public float reducedRewardMultiplier = 0.7f;
 
     [Header("Apply")]
-    [Tooltip("¼º°ø º¸»óÀ¸·Î ¸ğµç ÀÛ¹°¿¡ ¼ºÀå·®À» Àû¿ëÇÕ´Ï´Ù.")]
+    [Tooltip("ì„±ê³µ ë³´ìƒìœ¼ë¡œ ëª¨ë“  ì‘ë¬¼ì— ì„±ì¥ëŸ‰ì„ ì ìš©í•©ë‹ˆë‹¤.")]
     public bool applyGrowthToCrops = true;
 
-    [Tooltip("¼º°ø º¸»óÀ¸·Î ÇØ±İ ÁøÇàµµ¸¦ Àû¿ëÇÕ´Ï´Ù.")]
+    [Tooltip("ì„±ê³µ ë³´ìƒìœ¼ë¡œ í•´ê¸ˆ ì§„í–‰ë„ë¥¼ ì ìš©í•©ë‹ˆë‹¤.")]
     public bool applyUnlockProgress = true;
 
-    [Tooltip("¼º°ø º¸»óÀ¸·Î °ñµå¸¦ Áö±ŞÇÕ´Ï´Ù. ÇöÀç ±âº»°ªÀº ²¨µÎ´Â °ÍÀ» ±ÇÀåÇÕ´Ï´Ù.")]
+    [Tooltip("ì„±ê³µ ë³´ìƒìœ¼ë¡œ ê³¨ë“œë¥¼ ì§€ê¸‰í•©ë‹ˆë‹¤. í˜„ì¬ ê¸°ë³¸ê°’ì€ êº¼ë‘ëŠ” ê²ƒì„ ê¶Œì¥í•©ë‹ˆë‹¤.")]
     public bool applyGoldReward = false;
 
     [Header("Stamina Reward")]
     public bool applyStaminaReward = true;
 
-    [Tooltip("¼º°ø ¼¼¼Ç 1È¸´ç È¸º¹ÇÒ ½ºÅÂ¹Ì³ÊÀÔ´Ï´Ù.")]
+    [Tooltip("ì„±ê³µ ì„¸ì…˜ 1íšŒë‹¹ íšŒë³µí•  ìŠ¤íƒœë¯¸ë„ˆì…ë‹ˆë‹¤.")]
     public int staminaRewardOnSuccess = 2;
 
     private void Awake()
@@ -111,7 +111,7 @@ public class RewardProcessor : MonoBehaviour
         {
             return RewardResultData.CreateFailure(
                 reasonCode: "NoResult",
-                reasonMessage: "¼¼¼Ç °á°ú°¡ ¾ø½À´Ï´Ù.",
+                reasonMessage: "ì„¸ì…˜ ê²°ê³¼ê°€ ì—†ìŠµë‹ˆë‹¤.",
                 focusedMinutes: 0
             );
         }
@@ -120,7 +120,7 @@ public class RewardProcessor : MonoBehaviour
         {
             return RewardResultData.CreateFailure(
                 reasonCode: "Abandoned",
-                reasonMessage: "¼¼¼ÇÀ» Áß´ÜÇß½À´Ï´Ù. ´ÙÀ½ ¼¼¼Ç¿¡¼­ ´Ù½Ã ÀÌ¾î°¥ ¼ö ÀÖ½À´Ï´Ù.",
+                reasonMessage: "ì„¸ì…˜ì„ ì¤‘ë‹¨í–ˆìŠµë‹ˆë‹¤. ë‹¤ìŒ ì„¸ì…˜ì—ì„œ ë‹¤ì‹œ ì´ì–´ê°ˆ ìˆ˜ ìˆìŠµë‹ˆë‹¤.",
                 focusedMinutes: result.focusedMinutes
             );
         }
@@ -129,7 +129,7 @@ public class RewardProcessor : MonoBehaviour
         {
             return RewardResultData.CreateFailure(
                 reasonCode: "TooShort",
-                reasonMessage: "ÁıÁß ½Ã°£ÀÌ ÃÖ¼Ò º¸»ó ½Ã°£º¸´Ù Âª¾Æ ¼ºÀåÀÌ Àû¿ëµÇÁö ¾Ê¾Ò½À´Ï´Ù.",
+                reasonMessage: "ì§‘ì¤‘ ì‹œê°„ì´ ìµœì†Œ ë³´ìƒ ì‹œê°„ë³´ë‹¤ ì§§ì•„ ì„±ì¥ì´ ì ìš©ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.",
                 focusedMinutes: result.focusedMinutes
             );
         }
@@ -138,7 +138,7 @@ public class RewardProcessor : MonoBehaviour
         {
             return RewardResultData.CreateFailure(
                 reasonCode: "LongExit",
-                reasonMessage: "¾Û ÀÌÅ» ½Ã°£ÀÌ ±æ¾î ÁıÁß Èå¸§ÀÌ ²÷°å½À´Ï´Ù. ³óÀå ¼ºÀåÀº Àû¿ëµÇÁö ¾Ê¾Ò½À´Ï´Ù.",
+                reasonMessage: "ì•± ì´íƒˆ ì‹œê°„ì´ ê¸¸ì–´ ì§‘ì¤‘ íë¦„ì´ ëŠê²¼ìŠµë‹ˆë‹¤. ë†ì¥ ì„±ì¥ì€ ì ìš©ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.",
                 focusedMinutes: result.focusedMinutes
             );
         }
@@ -206,7 +206,7 @@ public class RewardProcessor : MonoBehaviour
 
             if (!appliedAnyGrowth)
             {
-                Debug.LogWarning("[RewardProcessor] ¼ºÀå º¸»óÀ» Àû¿ëÇÒ ³óÀå ¶Ç´Â ¼¶ ¸Å´ÏÀú°¡ ¾ø½À´Ï´Ù.", this);
+                Debug.LogWarning("[RewardProcessor] ì„±ì¥ ë³´ìƒì„ ì ìš©í•  ë†ì¥ ë˜ëŠ” ì„¬ ë§¤ë‹ˆì €ê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             }
         }
 
@@ -252,7 +252,7 @@ public class RewardProcessor : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("[RewardProcessor] UnlockManager°¡ ¾ø¾î ÇØ±İ ÁøÇàµµ¸¦ Àû¿ëÇÏÁö ¸øÇß½À´Ï´Ù.", this);
+                Debug.LogWarning("[RewardProcessor] UnlockManagerê°€ ì—†ì–´ í•´ê¸ˆ ì§„í–‰ë„ë¥¼ ì ìš©í•˜ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
             }
         }
 
@@ -264,7 +264,7 @@ public class RewardProcessor : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("[RewardProcessor] FarmManager°¡ ¾ø¾î °ñµå º¸»óÀ» Àû¿ëÇÏÁö ¸øÇß½À´Ï´Ù.", this);
+                Debug.LogWarning("[RewardProcessor] FarmManagerê°€ ì—†ì–´ ê³¨ë“œ ë³´ìƒì„ ì ìš©í•˜ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
             }
         }
 
@@ -276,7 +276,7 @@ public class RewardProcessor : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("[RewardProcessor] FarmManager°¡ ¾ø¾î ½ºÅÂ¹Ì³Ê º¸»óÀ» Àû¿ëÇÏÁö ¸øÇß½À´Ï´Ù.", this);
+                Debug.LogWarning("[RewardProcessor] FarmManagerê°€ ì—†ì–´ ìŠ¤íƒœë¯¸ë„ˆ ë³´ìƒì„ ì ìš©í•˜ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
             }
         }
     }
@@ -289,24 +289,24 @@ public class RewardProcessor : MonoBehaviour
         if (reward.finalSuccess)
         {
             Debug.Log(
-                $"[RewardProcessor] ¼º°ø º¸»ó Ã³¸® / ¸ñÇ¥: {result.goalName}, " +
-                $"ÁıÁß {reward.focusedMinutes}ºĞ, ¼ºÀå +{reward.rewardGrowth}, " +
-                $"ÇØ±İ +{reward.rewardUnlockProgress}, °ñµå +{reward.rewardGold}, " +
-                $"º¸»ó ¹èÀ² {reward.rewardMultiplier:F2}"
+                $"[RewardProcessor] ì„±ê³µ ë³´ìƒ ì²˜ë¦¬ / ëª©í‘œ: {result.goalName}, " +
+                $"ì§‘ì¤‘ {reward.focusedMinutes}ë¶„, ì„±ì¥ +{reward.rewardGrowth}, " +
+                $"í•´ê¸ˆ +{reward.rewardUnlockProgress}, ê³¨ë“œ +{reward.rewardGold}, " +
+                $"ë³´ìƒ ë°°ìœ¨ {reward.rewardMultiplier:F2}"
             );
 
             if (reward.unlockedSomething)
             {
                 Debug.Log(
-                    $"[RewardProcessor] »õ Ç×¸ñ ÇØ±İ: {reward.unlockedDisplayName}"
+                    $"[RewardProcessor] ìƒˆ í•­ëª© í•´ê¸ˆ: {reward.unlockedDisplayName}"
                 );
             }
         }
         else
         {
             Debug.Log(
-                $"[RewardProcessor] ½ÇÆĞ Ã³¸® / ¸ñÇ¥: {result.goalName}, " +
-                $"»çÀ¯: {reward.failReasonCode}, ¸Ş½ÃÁö: {reward.failReasonMessage}"
+                $"[RewardProcessor] ì‹¤íŒ¨ ì²˜ë¦¬ / ëª©í‘œ: {result.goalName}, " +
+                $"ì‚¬ìœ : {reward.failReasonCode}, ë©”ì‹œì§€: {reward.failReasonMessage}"
             );
         }
     }
@@ -317,7 +317,7 @@ public class RewardProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "°øºÎÇÏ±â",
+            goalName = "ê³µë¶€í•˜ê¸°",
             plannedMinutes = 10,
             focusedMinutes = 10,
             success = true,
@@ -336,7 +336,7 @@ public class RewardProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "°øºÎÇÏ±â",
+            goalName = "ê³µë¶€í•˜ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 30,
             success = true,
@@ -355,7 +355,7 @@ public class RewardProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Reading",
-            goalName = "µ¶¼­ÇÏ±â",
+            goalName = "ë…ì„œí•˜ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 30,
             success = true,
@@ -374,7 +374,7 @@ public class RewardProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "°øºÎÇÏ±â",
+            goalName = "ê³µë¶€í•˜ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 30,
             success = true,
@@ -393,7 +393,7 @@ public class RewardProcessor : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "°øºÎÇÏ±â",
+            goalName = "ê³µë¶€í•˜ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 6,
             success = false,

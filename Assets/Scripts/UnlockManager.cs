@@ -35,7 +35,7 @@ public class UnlockManager : MonoBehaviour
 
         totalProgress += amount;
 
-        Debug.Log($"[UnlockManager] ÇØ±İ ÁøÇàµµ +{amount} / ÇöÀç {totalProgress}");
+        Debug.Log($"[UnlockManager] í•´ê¸ˆ ì§„í–‰ë„ +{amount} / í˜„ì¬ {totalProgress}");
 
         CheckUnlocks();
         ApplyAllVisualStates();
@@ -54,7 +54,7 @@ public class UnlockManager : MonoBehaviour
             if (totalProgress >= entry.requiredProgress)
             {
                 entry.unlocked = true;
-                Debug.Log($"[UnlockManager] ÇØ±İ ¿Ï·á: {entry.displayName}");
+                Debug.Log($"[UnlockManager] í•´ê¸ˆ ì™„ë£Œ: {entry.displayName}");
             }
         }
     }
@@ -95,7 +95,7 @@ public class UnlockManager : MonoBehaviour
 
         ApplyAllVisualStates();
 
-        Debug.Log($"[UnlockManager] ÁøÇàµµ ºÒ·¯¿À±â ¿Ï·á / {totalProgress}");
+        Debug.Log($"[UnlockManager] ì§„í–‰ë„ ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ / {totalProgress}");
     }
 
     public void RecalculateUnlocksFromProgress()
@@ -123,7 +123,7 @@ public class UnlockManager : MonoBehaviour
 
         ApplyAllVisualStates();
 
-        Debug.Log("[UnlockManager] ÇØ±İ ÁøÇàµµ ÃÊ±âÈ­ ¿Ï·á");
+        Debug.Log("[UnlockManager] í•´ê¸ˆ ì§„í–‰ë„ ì´ˆê¸°í™” ì™„ë£Œ");
     }
 
     [ContextMenu("Test Add Progress +20")]
@@ -153,7 +153,7 @@ public class UnlockManager : MonoBehaviour
 
         ApplyAllVisualStates();
 
-        Debug.Log("[UnlockManager] Å×½ºÆ®¿ë ÇØ±İ »óÅÂ ÃÊ±âÈ­");
+        Debug.Log("[UnlockManager] í…ŒìŠ¤íŠ¸ìš© í•´ê¸ˆ ìƒíƒœ ì´ˆê¸°í™”");
     }
 }
 
@@ -163,16 +163,16 @@ public class UnlockEntry
     public string unlockId;
     public string displayName;
 
-    [Tooltip("ÀÌ ¼öÄ¡ ÀÌ»óÀÌ µÇ¸é ÇØ±İµË´Ï´Ù.")]
+    [Tooltip("ì´ ìˆ˜ì¹˜ ì´ìƒì´ ë˜ë©´ í•´ê¸ˆë©ë‹ˆë‹¤.")]
     public int requiredProgress = 100;
 
     public bool unlocked;
 
     [Header("Optional Visual Objects")]
-    [Tooltip("ÇØ±İµÇ¾úÀ» ¶§ È°¼ºÈ­ÇÒ ¿ÀºêÁ§Æ®ÀÔ´Ï´Ù.")]
+    [Tooltip("í•´ê¸ˆë˜ì—ˆì„ ë•Œ í™œì„±í™”í•  ì˜¤ë¸Œì íŠ¸ì…ë‹ˆë‹¤.")]
     public GameObject objectToActivateOnUnlock;
 
-    [Tooltip("ÇØ±İµÇ±â Àü±îÁö º¸¿©ÁÙ Àá±İ Ç¥½Ã ¿ÀºêÁ§Æ®ÀÔ´Ï´Ù.")]
+    [Tooltip("í•´ê¸ˆë˜ê¸° ì „ê¹Œì§€ ë³´ì—¬ì¤„ ì ê¸ˆ í‘œì‹œ ì˜¤ë¸Œì íŠ¸ì…ë‹ˆë‹¤.")]
     public GameObject objectToDeactivateOnUnlock;
 
     public void ApplyVisualState()

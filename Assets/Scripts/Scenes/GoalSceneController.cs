@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace FarmerGetToWork
 {
     /// <summary>
-    /// 목표와 집중 시간을 선택하고 GameData에 저장한 뒤 FocusScene으로 이동합니다.
+    /// 목표와 집중 시간을 선택하고 KBW 메인 런타임의 GameStateManager에 저장한 뒤 FocusScene으로 이동합니다.
     /// 카드와 버튼은 각각 Img_CardSkin, Img_ButtonSkin 슬롯을 갖고 있어 디자인 교체가 쉽습니다.
     /// </summary>
     public class GoalSceneController : MonoBehaviour
@@ -88,8 +88,14 @@ namespace FarmerGetToWork
             }
 
             string goalName = selectedCard == null ? GameData.selectedGoalName : selectedCard.GoalName;
-            int rewardGold = CalculateRewardGold();
-            GameData.SetSelectedGoal(goalName, selectedMinutes, rewardGold);
+            int expectedGold = RuntimeGameDataAdapter.GetExpectedGold(selectedMinutes, GetSelectedBaseReward());
+
+            RuntimeGameDataAdapter.SetSelectedSession(
+                goalName,
+                selectedMinutes,
+                expectedGold
+            );
+
             SceneLoader.LoadScene(SceneLoader.FocusScene);
         }
 
@@ -173,15 +179,21 @@ namespace FarmerGetToWork
 
         private void RefreshExpectedReward()
         {
-            int rewardGold = CalculateRewardGold();
-            UIBinder.SetText(expectedRewardText, $"+{rewardGold} 골드");
-            UIBinder.SetText(expectedGrowthText, $"{selectedMinutes}분 집중 성장");
+            int expectedGrowth = RuntimeGameDataAdapter.GetExpectedGrowth(selectedMinutes);
+            int expectedUnlock = RuntimeGameDataAdapter.GetExpectedUnlockProgress(selectedMinutes);
+            int expectedGold = RuntimeGameDataAdapter.GetExpectedGold(selectedMinutes, GetSelectedBaseReward());
+
+            if (expectedGold > 0 && RuntimeGameDataAdapter.RewardProcessor != null && RuntimeGameDataAdapter.RewardProcessor.applyGoldReward)
+                UIBinder.SetText(expectedRewardText, $"+{expectedGold} 골드");
+            else
+                UIBinder.SetText(expectedRewardText, $"성장 +{expectedGrowth}");
+
+            UIBinder.SetText(expectedGrowthText, $"해금 +{expectedUnlock}");
         }
 
-        private int CalculateRewardGold()
+        private int GetSelectedBaseReward()
         {
-            int baseReward = selectedCard == null ? 120 : selectedCard.BaseRewardGold;
-            return Mathf.Max(1, Mathf.RoundToInt(baseReward * (selectedMinutes / 30f)));
+            return selectedCard == null ? 120 : selectedCard.BaseRewardGold;
         }
 
         private void Bind()

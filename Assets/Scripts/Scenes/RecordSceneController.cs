@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace FarmerGetToWork
 {
     /// <summary>
-    /// 기록 화면의 정적 UI를 GameData 기반으로 갱신합니다.
+    /// 기록 화면의 UI를 KBW 메인 런타임의 SessionRecordManager와 FarmManager 기준으로 갱신합니다.
     /// 주간 그래프는 각 Img_Bar_* RectTransform 높이로 표현합니다.
     /// </summary>
     public class RecordSceneController : MonoBehaviour
@@ -16,7 +16,7 @@ namespace FarmerGetToWork
         [SerializeField] private TextMeshProUGUI commentText;
         [SerializeField] private List<AchievementCardUI> achievementCards = new List<AchievementCardUI>();
 
-        private readonly int[] weeklyMinutes = { 90, 130, 185, 165, 140, 110, 80 };
+        private readonly int[] fallbackWeeklyMinutes = { 90, 130, 185, 165, 140, 110, 80 };
 
         private void Awake()
         {
@@ -45,6 +45,7 @@ namespace FarmerGetToWork
 
         private void RefreshWeeklyChart()
         {
+            int[] weeklyMinutes = GetWeeklyMinutes();
             int maxMinutes = 1;
             foreach (int minutes in weeklyMinutes)
             {
@@ -58,8 +59,8 @@ namespace FarmerGetToWork
                 rect.sizeDelta = new Vector2(rect.sizeDelta.x, height);
             }
 
-            UIBinder.SetText(totalTimeText, $"이번 주 {GameData.FormatMinutesKorean(GameData.weeklyFocusMinutes)}");
-            UIBinder.SetText(commentText, "수요일이 가장 집중력이 좋았어요!\n좋은 페이스예요! 계속해봐요!");
+            UIBinder.SetText(totalTimeText, $"이번 주 {RuntimeGameDataAdapter.FormatMinutesKorean(RuntimeGameDataAdapter.GetWeeklyFocusMinutes())}");
+            UIBinder.SetText(commentText, CreateWeeklyComment(weeklyMinutes));
         }
 
         private void RefreshAchievements()
@@ -80,14 +81,66 @@ namespace FarmerGetToWork
 
             string[] progress =
             {
-                "10/10시간", $"{GameData.streakDays}/7일", "18/50시간", $"{GameData.streakDays}/30일", $"{GameData.gold:N0}/50,000"
+                $"{RuntimeGameDataAdapter.GetTotalFocusedMinutes() / 60}/10시간",
+                $"{RuntimeGameDataAdapter.GetStreakDays()}/7일",
+                $"{RuntimeGameDataAdapter.GetTotalFocusedMinutes() / 60}/50시간",
+                $"{RuntimeGameDataAdapter.GetStreakDays()}/30일",
+                $"{RuntimeGameDataAdapter.GetGold():N0}/50,000"
+            };
+
+            bool[] unlocked =
+            {
+                RuntimeGameDataAdapter.GetTotalFocusedMinutes() >= 600,
+                RuntimeGameDataAdapter.GetStreakDays() >= 7,
+                RuntimeGameDataAdapter.GetTotalFocusedMinutes() >= 3000,
+                RuntimeGameDataAdapter.GetStreakDays() >= 30,
+                RuntimeGameDataAdapter.GetGold() >= 50000
             };
 
             for (int i = 0; i < achievementCards.Count && i < titles.Length; i++)
             {
-                bool unlocked = i < 2;
-                achievementCards[i].SetData(titles[i], descriptions[i], progress[i], unlocked);
+                achievementCards[i].SetData(titles[i], descriptions[i], progress[i], unlocked[i]);
             }
+        }
+
+        private int[] GetWeeklyMinutes()
+        {
+            SessionRecordManager records = RuntimeGameDataAdapter.Records;
+            if (records == null)
+                return fallbackWeeklyMinutes;
+
+            List<SessionSummaryData> summaries = records.GetRecentDaySummaries(7);
+            if (summaries == null || summaries.Count == 0)
+                return fallbackWeeklyMinutes;
+
+            int[] result = new int[7];
+            for (int i = 0; i < result.Length && i < summaries.Count; i++)
+            {
+                result[i] = summaries[i] == null ? 0 : summaries[i].totalFocusedMinutes;
+            }
+
+            return result;
+        }
+
+        private string CreateWeeklyComment(int[] weeklyMinutes)
+        {
+            string[] dayNames = { "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일" };
+            int bestIndex = 0;
+            int bestMinutes = 0;
+
+            for (int i = 0; i < weeklyMinutes.Length; i++)
+            {
+                if (weeklyMinutes[i] > bestMinutes)
+                {
+                    bestMinutes = weeklyMinutes[i];
+                    bestIndex = i;
+                }
+            }
+
+            if (bestMinutes <= 0)
+                return "아직 이번 주 집중 기록이 없어요.\n첫 세션을 완료하면 기록이 채워져요!";
+
+            return $"{dayNames[bestIndex]}이 가장 집중력이 좋았어요!\n좋은 페이스예요! 계속해봐요!";
         }
 
         private void Bind()

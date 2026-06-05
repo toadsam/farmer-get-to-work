@@ -16,7 +16,7 @@ public class FarmManager : MonoBehaviour
 
     [Header("Save / Load")]
     public string farmIslandId = "MainFarm";
-    public string farmDisplayName = "¸ŞÀÎ ³óÀå";
+    public string farmDisplayName = "ë©”ì¸ ë†ì¥";
 
     [Header("Stamina Costs")]
     public int plantStaminaCost = 0;
@@ -24,7 +24,7 @@ public class FarmManager : MonoBehaviour
     public int hiddenInteractionStaminaCost = 1;
     public int specialInteractionStaminaCost = 1;
 
-    [Tooltip("ÀúÀåµÈ cropId·Î ÀÛ¹°À» ´Ù½Ã Ã£±â À§ÇÑ ¸ñ·ÏÀÔ´Ï´Ù. ±âº» ÀÛ¹°µµ ³Ö¾îµÎ´Â °ÍÀ» ±ÇÀåÇÕ´Ï´Ù.")]
+    [Tooltip("ì €ì¥ëœ cropIdë¡œ ì‘ë¬¼ì„ ë‹¤ì‹œ ì°¾ê¸° ìœ„í•œ ëª©ë¡ì…ë‹ˆë‹¤. ê¸°ë³¸ ì‘ë¬¼ë„ ë„£ì–´ë‘ëŠ” ê²ƒì„ ê¶Œì¥í•©ë‹ˆë‹¤.")]
     public List<CropDefinition> availableCrops = new List<CropDefinition>();
 
     private void Awake()
@@ -53,13 +53,13 @@ public class FarmManager : MonoBehaviour
 
         if (stamina < amount)
         {
-            Debug.LogWarning($"[FarmManager] ½ºÅÂ¹Ì³Ê ºÎÁ· / ÇÊ¿ä {amount}, ÇöÀç {stamina}", this);
+            Debug.LogWarning($"[FarmManager] ìŠ¤íƒœë¯¸ë„ˆ ë¶€ì¡± / í•„ìš” {amount}, í˜„ì¬ {stamina}", this);
             return false;
         }
 
         stamina -= amount;
 
-        Debug.Log($"[FarmManager] Stamina -{amount} / ÇöÀç {stamina}/{maxStamina}");
+        Debug.Log($"[FarmManager] Stamina -{amount} / í˜„ì¬ {stamina}/{maxStamina}");
         return true;
     }
 
@@ -70,14 +70,14 @@ public class FarmManager : MonoBehaviour
 
         stamina = Mathf.Clamp(stamina + amount, 0, maxStamina);
 
-        Debug.Log($"[FarmManager] Stamina +{amount} / ÇöÀç {stamina}/{maxStamina}");
+        Debug.Log($"[FarmManager] Stamina +{amount} / í˜„ì¬ {stamina}/{maxStamina}");
     }
 
     public void RefillStamina()
     {
         stamina = maxStamina;
 
-        Debug.Log($"[FarmManager] ½ºÅÂ¹Ì³Ê È¸º¹ ¿Ï·á / {stamina}/{maxStamina}");
+        Debug.Log($"[FarmManager] ìŠ¤íƒœë¯¸ë„ˆ íšŒë³µ ì™„ë£Œ / {stamina}/{maxStamina}");
     }
 
     public void AddGold(int amount)
@@ -90,25 +90,25 @@ public class FarmManager : MonoBehaviour
     {
         if (plot == null)
         {
-            reason = "¹ç Á¤º¸°¡ ¾ø½À´Ï´Ù.";
+            reason = "ë°­ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.";
             return false;
         }
 
         if (!plot.IsEmpty)
         {
-            reason = "ÀÌ¹Ì ÀÛ¹°ÀÌ ½É¾îÁ® ÀÖ½À´Ï´Ù.";
+            reason = "ì´ë¯¸ ì‘ë¬¼ì´ ì‹¬ì–´ì ¸ ìˆìŠµë‹ˆë‹¤.";
             return false;
         }
 
         if (crop == null)
         {
-            reason = "½ÉÀ» ÀÛ¹°ÀÌ ¼³Á¤µÇ¾î ÀÖÁö ¾Ê½À´Ï´Ù.";
+            reason = "ì‹¬ì„ ì‘ë¬¼ì´ ì„¤ì •ë˜ì–´ ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.";
             return false;
         }
 
         if (!HasEnoughStamina(plantStaminaCost))
         {
-            reason = "½ºÅÂ¹Ì³Ê°¡ ºÎÁ·ÇÕ´Ï´Ù.";
+            reason = "ìŠ¤íƒœë¯¸ë„ˆê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.";
             return false;
         }
 
@@ -120,7 +120,7 @@ public class FarmManager : MonoBehaviour
     {
         if (!CanPlantToPlot(plot, crop, out string reason))
         {
-            Debug.LogWarning($"[FarmManager] ÀÛ¹° ½É±â ½ÇÆĞ: {reason}", this);
+            Debug.LogWarning($"[FarmManager] ì‘ë¬¼ ì‹¬ê¸° ì‹¤íŒ¨: {reason}", this);
             return false;
         }
 
@@ -129,7 +129,7 @@ public class FarmManager : MonoBehaviour
 
         plot.Plant(crop);
 
-        Debug.Log($"[FarmManager] ÀÛ¹° ½É±â ¿Ï·á: {crop.displayName}");
+        Debug.Log($"[FarmManager] ì‘ë¬¼ ì‹¬ê¸° ì™„ë£Œ: {crop.displayName}");
         return true;
     }
 
@@ -137,19 +137,19 @@ public class FarmManager : MonoBehaviour
     {
         if (plot == null)
         {
-            reason = "¹ç Á¤º¸°¡ ¾ø½À´Ï´Ù.";
+            reason = "ë°­ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.";
             return false;
         }
 
         if (!plot.IsReady)
         {
-            reason = "¾ÆÁ÷ ¼öÈ®ÇÒ ¼ö ¾ø½À´Ï´Ù.";
+            reason = "ì•„ì§ ìˆ˜í™•í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.";
             return false;
         }
 
         if (!HasEnoughStamina(harvestStaminaCost))
         {
-            reason = "½ºÅÂ¹Ì³Ê°¡ ºÎÁ·ÇØ¼­ ¼öÈ®ÇÒ ¼ö ¾ø½À´Ï´Ù.";
+            reason = "ìŠ¤íƒœë¯¸ë„ˆê°€ ë¶€ì¡±í•´ì„œ ìˆ˜í™•í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.";
             return false;
         }
 
@@ -161,7 +161,7 @@ public class FarmManager : MonoBehaviour
     {
         if (!CanHarvestPlot(plot, out string reason))
         {
-            Debug.LogWarning($"[FarmManager] ¼öÈ® ½ÇÆĞ: {reason}", this);
+            Debug.LogWarning($"[FarmManager] ìˆ˜í™• ì‹¤íŒ¨: {reason}", this);
             return false;
         }
 
@@ -173,7 +173,7 @@ public class FarmManager : MonoBehaviour
         if (earnedGold > 0)
             AddGold(earnedGold);
 
-        Debug.Log($"[FarmManager] ¼öÈ® ¿Ï·á / Gold +{earnedGold}");
+        Debug.Log($"[FarmManager] ìˆ˜í™• ì™„ë£Œ / Gold +{earnedGold}");
         return true;
     }
 
@@ -191,7 +191,7 @@ public class FarmManager : MonoBehaviour
         maxStamina = Mathf.Max(1, loadedMaxStamina);
         stamina = Mathf.Clamp(loadedStamina, 0, maxStamina);
 
-        Debug.Log($"[FarmManager] ¸®¼Ò½º ºÒ·¯¿À±â / Gold {gold}, Stamina {stamina}/{maxStamina}");
+        Debug.Log($"[FarmManager] ë¦¬ì†ŒìŠ¤ ë¶ˆëŸ¬ì˜¤ê¸° / Gold {gold}, Stamina {stamina}/{maxStamina}");
     }
 
     public CropDefinition FindCropById(string cropId)
@@ -211,7 +211,7 @@ public class FarmManager : MonoBehaviour
                 return crop;
         }
 
-        Debug.LogWarning($"[FarmManager] cropId '{cropId}'¿¡ ÇØ´çÇÏ´Â CropDefinitionÀ» Ã£Áö ¸øÇß½À´Ï´Ù.", this);
+        Debug.LogWarning($"[FarmManager] cropId '{cropId}'ì— í•´ë‹¹í•˜ëŠ” CropDefinitionì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
         return null;
     }
 
@@ -242,7 +242,7 @@ public class FarmManager : MonoBehaviour
     {
         if (islandData == null)
         {
-            Debug.LogWarning("[FarmManager] ºÒ·¯¿Ã ¼¶ µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[FarmManager] ë¶ˆëŸ¬ì˜¬ ì„¬ ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -265,7 +265,7 @@ public class FarmManager : MonoBehaviour
             plot.ApplyStateData(plotData, crop);
         }
 
-        Debug.Log($"[FarmManager] ³óÀå »óÅÂ ºÒ·¯¿À±â ¿Ï·á / {islandData.displayName}");
+        Debug.Log($"[FarmManager] ë†ì¥ ìƒíƒœ ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ / {islandData.displayName}");
     }
 
     public bool CanSpendGold(int amount)
@@ -283,13 +283,13 @@ public class FarmManager : MonoBehaviour
 
         if (gold < amount)
         {
-            Debug.LogWarning($"[FarmManager] °ñµå ºÎÁ· / ÇÊ¿ä {amount}, ÇöÀç {gold}", this);
+            Debug.LogWarning($"[FarmManager] ê³¨ë“œ ë¶€ì¡± / í•„ìš” {amount}, í˜„ì¬ {gold}", this);
             return false;
         }
 
         gold -= amount;
 
-        Debug.Log($"[FarmManager] Gold -{amount} / ÇöÀç Gold {gold}");
+        Debug.Log($"[FarmManager] Gold -{amount} / í˜„ì¬ Gold {gold}");
         return true;
     }
 
@@ -307,7 +307,7 @@ public class FarmManager : MonoBehaviour
             plot.ClearPlot();
         }
 
-        Debug.Log("[FarmManager] »õ °ÔÀÓ »óÅÂ·Î ÃÊ±âÈ­ ¿Ï·á");
+        Debug.Log("[FarmManager] ìƒˆ ê²Œì„ ìƒíƒœë¡œ ì´ˆê¸°í™” ì™„ë£Œ");
     }
 
     [ContextMenu("Test Plant All Direct")]
@@ -319,21 +319,21 @@ public class FarmManager : MonoBehaviour
                 plot.Plant(defaultCrop);
         }
 
-        Debug.Log("[Test] ¸ğµç ºó ¹ç¿¡ ÀÛ¹°À» ½É¾ú½À´Ï´Ù.");
+        Debug.Log("[Test] ëª¨ë“  ë¹ˆ ë°­ì— ì‘ë¬¼ì„ ì‹¬ì—ˆìŠµë‹ˆë‹¤.");
     }
 
     [ContextMenu("Test Grow All +50")]
     public void TestGrowAll50()
     {
         AddGrowthToAllCrops(50);
-        Debug.Log("[Test] ¸ğµç ÀÛ¹° ¼ºÀå +50");
+        Debug.Log("[Test] ëª¨ë“  ì‘ë¬¼ ì„±ì¥ +50");
     }
 
     [ContextMenu("Test Refill Stamina")]
     public void TestRefillStamina()
     {
         stamina = maxStamina;
-        Debug.Log("[Test] ½ºÅÂ¹Ì³Ê È¸º¹");
+        Debug.Log("[Test] ìŠ¤íƒœë¯¸ë„ˆ íšŒë³µ");
     }
 
     [ContextMenu("Test Harvest Ready All")]
@@ -345,7 +345,7 @@ public class FarmManager : MonoBehaviour
                 HarvestPlot(plot);
         }
 
-        Debug.Log("[Test] ¼öÈ® °¡´ÉÇÑ ÀÛ¹°À» ¼öÈ®Çß½À´Ï´Ù.");
+        Debug.Log("[Test] ìˆ˜í™• ê°€ëŠ¥í•œ ì‘ë¬¼ì„ ìˆ˜í™•í–ˆìŠµë‹ˆë‹¤.");
     }
 
 

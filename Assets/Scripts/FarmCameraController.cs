@@ -19,19 +19,19 @@ public class FarmCameraController : MonoBehaviour
     [Header("Pan Bounds")]
     public bool usePanBounds = true;
 
-    [Tooltip("³óÀå ¼¶/È®Àå ¼¶µéÀÌ µé¾îÀÖ´Â ºÎ¸ğ ¿ÀºêÁ§Æ®¸¦ ³ÖÀ¸¼¼¿ä. ºñ¿öµÎ¸é Manual Bounds¸¦ »ç¿ëÇÕ´Ï´Ù.")]
+    [Tooltip("ë†ì¥ ì„¬/í™•ì¥ ì„¬ë“¤ì´ ë“¤ì–´ìˆëŠ” ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ë¥¼ ë„£ìœ¼ì„¸ìš”. ë¹„ì›Œë‘ë©´ Manual Boundsë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤.")]
     public Transform farmBoundsRoot;
 
-    [Tooltip("Farm Bounds Root°¡ ¾ø°Å³ª ÀÚµ¿ °è»êÀÌ ºÎÁ·ÇÒ ¶§ »ç¿ëÇÏ´Â ¼öµ¿ ÀÌµ¿ ¹üÀ§ÀÔ´Ï´Ù.")]
+    [Tooltip("Farm Bounds Rootê°€ ì—†ê±°ë‚˜ ìë™ ê³„ì‚°ì´ ë¶€ì¡±í•  ë•Œ ì‚¬ìš©í•˜ëŠ” ìˆ˜ë™ ì´ë™ ë²”ìœ„ì…ë‹ˆë‹¤.")]
     public Vector2 manualMinXZ = new Vector2(-12f, -12f);
 
-    [Tooltip("À§ÂÊÀ¸·Î ³óÀåÀÌ È®ÀåµÈ´Ù¸é Z Max¸¦ Å©°Ô ÀâÀ¸¼¼¿ä.")]
+    [Tooltip("ìœ„ìª½ìœ¼ë¡œ ë†ì¥ì´ í™•ì¥ëœë‹¤ë©´ Z Maxë¥¼ í¬ê²Œ ì¡ìœ¼ì„¸ìš”.")]
     public Vector2 manualMaxXZ = new Vector2(12f, 22f);
 
-    [Tooltip("³óÀå °æ°èº¸´Ù Á¶±İ ´õ ¹Ù±ù±îÁö º¼ ¼ö ÀÖ°Ô ÇÏ´Â ¿©À¯°ªÀÔ´Ï´Ù.")]
+    [Tooltip("ë†ì¥ ê²½ê³„ë³´ë‹¤ ì¡°ê¸ˆ ë” ë°”ê¹¥ê¹Œì§€ ë³¼ ìˆ˜ ìˆê²Œ í•˜ëŠ” ì—¬ìœ ê°’ì…ë‹ˆë‹¤.")]
     public float boundsPadding = 5f;
 
-    [Tooltip("ÄÑµÎ¸é ½ÃÀÛ ½Ã Renderer ±âÁØÀ¸·Î ³óÀå ÀüÃ¼ ¹üÀ§¸¦ ÀÚµ¿ °è»êÇÕ´Ï´Ù.")]
+    [Tooltip("ì¼œë‘ë©´ ì‹œì‘ ì‹œ Renderer ê¸°ì¤€ìœ¼ë¡œ ë†ì¥ ì „ì²´ ë²”ìœ„ë¥¼ ìë™ ê³„ì‚°í•©ë‹ˆë‹¤.")]
     public bool calculateBoundsFromRenderersOnStart = true;
 
     [Header("Zoom")]
@@ -132,7 +132,7 @@ public class FarmCameraController : MonoBehaviour
             currentMaxXZ = manualMaxXZ;
 
             Debug.Log(
-                $"[FarmCamera] ¼öµ¿ ÀÌµ¿ ¹üÀ§ »ç¿ë / Min {currentMinXZ}, Max {currentMaxXZ}"
+                $"[FarmCamera] ìˆ˜ë™ ì´ë™ ë²”ìœ„ ì‚¬ìš© / Min {currentMinXZ}, Max {currentMaxXZ}"
             );
             return;
         }
@@ -145,7 +145,7 @@ public class FarmCameraController : MonoBehaviour
             currentMaxXZ = manualMaxXZ;
 
             Debug.LogWarning(
-                "[FarmCamera] Farm Bounds Root ¾Æ·¡ Renderer°¡ ¾ø¾î ¼öµ¿ ÀÌµ¿ ¹üÀ§¸¦ »ç¿ëÇÕ´Ï´Ù.",
+                "[FarmCamera] Farm Bounds Root ì•„ë˜ Rendererê°€ ì—†ì–´ ìˆ˜ë™ ì´ë™ ë²”ìœ„ë¥¼ ì‚¬ìš©í•©ë‹ˆë‹¤.",
                 this
             );
             return;
@@ -172,7 +172,7 @@ public class FarmCameraController : MonoBehaviour
         );
 
         Debug.Log(
-            $"[FarmCamera] ÀÚµ¿ ÀÌµ¿ ¹üÀ§ °è»ê ¿Ï·á / Min {currentMinXZ}, Max {currentMaxXZ}"
+            $"[FarmCamera] ìë™ ì´ë™ ë²”ìœ„ ê³„ì‚° ì™„ë£Œ / Min {currentMinXZ}, Max {currentMaxXZ}"
         );
 
         ClampCameraRootToBounds();
@@ -397,7 +397,7 @@ public class FarmCameraController : MonoBehaviour
         isRotating = true;
         IsCameraGestureActive = true;
 
-        Debug.Log($"[FarmCamera] È¸Àü ½ÃÀÛ: {startYaw:F1} ¡æ {targetYaw:F1}");
+        Debug.Log($"[FarmCamera] íšŒì „ ì‹œì‘: {startYaw:F1} â†’ {targetYaw:F1}");
     }
 
     private void UpdateSnapRotation()
@@ -425,7 +425,7 @@ public class FarmCameraController : MonoBehaviour
             yawPivot.eulerAngles = finalEuler;
 
             isRotating = false;
-            Debug.Log($"[FarmCamera] È¸Àü ¿Ï·á: {targetYaw:F1}");
+            Debug.Log($"[FarmCamera] íšŒì „ ì™„ë£Œ: {targetYaw:F1}");
         }
     }
 

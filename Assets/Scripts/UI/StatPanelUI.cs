@@ -69,32 +69,33 @@ namespace FarmerGetToWork
         public void RefreshFromGameData()
         {
             Bind();
+            RuntimeGameDataAdapter.GetUnlockedItemCounts(out int unlockedCount, out int totalCount);
 
             switch (statKind)
             {
                 case StatPanelKind.Gold:
-                    SetText("골드", GameData.gold.ToString("N0"));
+                    SetText("골드", RuntimeGameDataAdapter.GetGold().ToString("N0"));
                     break;
                 case StatPanelKind.TodayFocus:
-                    SetText("오늘 집중 시간", GameData.FormatMinutesKorean(GameData.totalFocusMinutesToday));
+                    SetText("오늘 집중 시간", RuntimeGameDataAdapter.FormatMinutesKorean(RuntimeGameDataAdapter.GetTodayFocusMinutes()));
                     break;
                 case StatPanelKind.Streak:
-                    SetText("연속 성공", $"{GameData.streakDays}일");
+                    SetText("연속 성공", $"{RuntimeGameDataAdapter.GetStreakDays()}일");
                     break;
                 case StatPanelKind.WeeklyFocus:
-                    SetText("이번 주 누적 시간", GameData.FormatMinutesKorean(GameData.weeklyFocusMinutes));
+                    SetText("이번 주 누적 시간", RuntimeGameDataAdapter.FormatMinutesKorean(RuntimeGameDataAdapter.GetWeeklyFocusMinutes()));
                     break;
                 case StatPanelKind.TotalGold:
-                    SetText("총 획득 골드", GameData.gold.ToString("N0"));
+                    SetText("총 획득 골드", RuntimeGameDataAdapter.GetGold().ToString("N0"));
                     break;
                 case StatPanelKind.FarmLevel:
-                    SetText("농장 레벨", $"Lv.{GameData.farmLevel}");
+                    SetText("농장 레벨", $"Lv.{RuntimeGameDataAdapter.GetFarmLevel()}");
                     break;
                 case StatPanelKind.UnlockedItems:
-                    SetText("해제한 아이템", $"{GameData.unlockedItemCount}/{GameData.totalItemCount}");
+                    SetText("해제한 아이템", $"{unlockedCount}/{totalCount}");
                     break;
                 case StatPanelKind.BestSession:
-                    SetText("최고 집중 세션", "3시간 05분");
+                    SetText("최고 집중 세션", RuntimeGameDataAdapter.FormatMinutesKorean(RuntimeGameDataAdapter.GetBestSessionMinutes()));
                     break;
             }
         }

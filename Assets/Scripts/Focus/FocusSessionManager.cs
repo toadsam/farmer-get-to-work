@@ -6,8 +6,8 @@ using UnityEngine.UI;
 namespace FarmerGetToWork
 {
     /// <summary>
-    /// FocusScene의 카운트다운과 성공/실패 이동을 담당합니다.
-    /// 실제 DTx 검증 로직은 나중에 이 클래스 주변에 붙이고, 지금은 UI 프로토타입 흐름을 완성합니다.
+    /// FocusScene의 표시 UI를 KBW 메인 런타임의 FocusSessionService에 연결합니다.
+    /// 타이머, 앱 이탈, 보상 처리, 기록 저장은 FocusSessionService와 RewardProcessor가 담당합니다.
     /// </summary>
     public class FocusSessionManager : MonoBehaviour
     {
@@ -20,8 +20,7 @@ namespace FarmerGetToWork
         [SerializeField] private Button natureSoundButton;
         [SerializeField] private AppPauseDetector pauseDetector;
 
-        private float totalSeconds;
-        private float remainingSeconds;
+        private FocusSessionService focusSessionService;
         private bool paused;
         private bool finished;
 
@@ -33,57 +32,59 @@ namespace FarmerGetToWork
 
         private void OnDestroy()
         {
+            UnbindFocusService();
+
             if (pauseDetector != null)
             {
                 pauseDetector.AppLeft -= HandleAppLeave;
             }
+
+            Time.timeScale = 1f;
         }
 
         private void Start()
         {
-            BeginSessionFromGameData();
+            BeginSessionFromRuntime();
         }
 
-        private void Update()
+        public void BeginSessionFromRuntime()
         {
-            if (finished || paused)
-            {
-                return;
-            }
-
-            remainingSeconds -= Time.deltaTime;
-            if (remainingSeconds <= 0f)
-            {
-                remainingSeconds = 0f;
-                RefreshTimerUI();
-                CompleteSession();
-                return;
-            }
-
-            RefreshTimerUI();
-        }
-
-        public void BeginSessionFromGameData()
-        {
-            totalSeconds = Mathf.Max(1, GameData.selectedGoalMinutes * 60);
-            remainingSeconds = totalSeconds;
             paused = false;
             finished = false;
+            Time.timeScale = 1f;
 
-            UIBinder.SetText(goalTitleText, $"{GameData.selectedGoalName} {GameData.selectedGoalMinutes}분");
-            UIBinder.SetText(endTimeText, $"{DateTime.Now.AddMinutes(GameData.selectedGoalMinutes):HH:mm} 종료 예정");
+            focusSessionService = RuntimeGameDataAdapter.FocusSession;
+            if (focusSessionService == null)
+            {
+                Debug.LogError("[FocusScene] FocusSessionService가 없어 집중 세션을 시작할 수 없습니다.", this);
+                SceneLoader.LoadScene(SceneLoader.FailScene);
+                return;
+            }
+
+            focusSessionService.autoMoveSceneOnFinish = false;
+            BindFocusService();
+
+            FocusSessionConfig selectedConfig = RuntimeGameDataAdapter.GetSelectedSessionOrFallback();
+            RefreshSessionHeader(selectedConfig);
+
+            if (!focusSessionService.IsRunning && !focusSessionService.StartSelectedSession())
+            {
+                Debug.LogWarning("[FocusScene] 선택 세션 시작 실패. 백업 세션으로 다시 시도합니다.", this);
+                focusSessionService.StartSession(selectedConfig);
+            }
 
             if (pauseDetector != null)
             {
                 pauseDetector.SetFocusSessionActive(true);
             }
 
-            RefreshTimerUI();
+            RefreshTimerUI(focusSessionService.runtimeData);
         }
 
         public void TogglePause()
         {
             paused = !paused;
+            Time.timeScale = paused ? 0f : 1f;
             Debug.Log(paused ? "집중 타이머 일시정지" : "집중 타이머 재개");
         }
 
@@ -95,8 +96,16 @@ namespace FarmerGetToWork
             }
 
             finished = true;
-            GameData.MarkFocusSessionFailed();
-            SceneLoader.LoadScene(SceneLoader.FailScene);
+            Time.timeScale = 1f;
+
+            if (focusSessionService != null && focusSessionService.IsRunning)
+            {
+                focusSessionService.CancelSession();
+            }
+            else
+            {
+                SceneLoader.LoadScene(SceneLoader.FailScene);
+            }
         }
 
         public void CompleteSession()
@@ -107,13 +116,16 @@ namespace FarmerGetToWork
             }
 
             finished = true;
-            if (pauseDetector != null)
-            {
-                pauseDetector.SetFocusSessionActive(false);
-            }
+            Time.timeScale = 1f;
 
-            GameData.MarkFocusSessionSucceeded();
-            SceneLoader.LoadScene(SceneLoader.SuccessScene);
+            if (focusSessionService != null && focusSessionService.IsRunning)
+            {
+                focusSessionService.ForceCompleteSessionForTest();
+            }
+            else
+            {
+                SceneLoader.LoadScene(SceneLoader.SuccessScene);
+            }
         }
 
         public void PlayNatureSound()
@@ -126,17 +138,83 @@ namespace FarmerGetToWork
             GiveUp();
         }
 
-        private void RefreshTimerUI()
+        private void BindFocusService()
         {
-            int total = Mathf.CeilToInt(remainingSeconds);
-            int minutes = total / 60;
-            int seconds = total % 60;
+            if (focusSessionService == null)
+                return;
 
-            UIBinder.SetText(timerText, $"{minutes:00}:{seconds:00}");
+            focusSessionService.OnSessionStarted -= HandleSessionStarted;
+            focusSessionService.OnSessionTick -= HandleSessionTick;
+            focusSessionService.OnSessionFinished -= HandleSessionFinished;
+
+            focusSessionService.OnSessionStarted += HandleSessionStarted;
+            focusSessionService.OnSessionTick += HandleSessionTick;
+            focusSessionService.OnSessionFinished += HandleSessionFinished;
+        }
+
+        private void UnbindFocusService()
+        {
+            if (focusSessionService == null)
+                return;
+
+            focusSessionService.OnSessionStarted -= HandleSessionStarted;
+            focusSessionService.OnSessionTick -= HandleSessionTick;
+            focusSessionService.OnSessionFinished -= HandleSessionFinished;
+        }
+
+        private void HandleSessionStarted(FocusSessionRuntimeData runtimeData)
+        {
+            RefreshSessionHeader(runtimeData == null ? null : runtimeData.config);
+            RefreshTimerUI(runtimeData);
+        }
+
+        private void HandleSessionTick(FocusSessionRuntimeData runtimeData)
+        {
+            RefreshTimerUI(runtimeData);
+        }
+
+        private void HandleSessionFinished(FocusSessionResult result, RewardResultData rewardResult)
+        {
+            finished = true;
+            paused = false;
+            Time.timeScale = 1f;
+
+            if (pauseDetector != null)
+                pauseDetector.SetFocusSessionActive(false);
+
+            bool success = rewardResult != null
+                ? rewardResult.finalSuccess
+                : result != null && result.success;
+            SceneLoader.LoadScene(success ? SceneLoader.SuccessScene : SceneLoader.FailScene);
+        }
+
+        private void RefreshSessionHeader(FocusSessionConfig config)
+        {
+            if (config == null)
+                config = RuntimeGameDataAdapter.GetSelectedSessionOrFallback();
+
+            UIBinder.SetText(goalTitleText, $"{config.goalName} {config.plannedMinutes}분");
+            UIBinder.SetText(endTimeText, $"{DateTime.Now.AddSeconds(config.GetSessionDurationSeconds()):HH:mm} 종료 예정");
+        }
+
+        private void RefreshTimerUI(FocusSessionRuntimeData runtimeData)
+        {
+            if (runtimeData == null)
+            {
+                UIBinder.SetText(timerText, "00:00");
+                if (progressRingFill != null)
+                    progressRingFill.fillAmount = 0f;
+
+                return;
+            }
+
+            UIBinder.SetText(timerText, GameDataUtility.ToMinuteSecondText(runtimeData.remainingSeconds));
 
             if (progressRingFill != null)
             {
-                progressRingFill.fillAmount = totalSeconds <= 0f ? 0f : Mathf.Clamp01(remainingSeconds / totalSeconds);
+                progressRingFill.fillAmount = runtimeData.durationSeconds <= 0f
+                    ? 0f
+                    : Mathf.Clamp01(runtimeData.remainingSeconds / runtimeData.durationSeconds);
             }
         }
 

@@ -9,7 +9,7 @@ public class SceneFlowManager : MonoBehaviour
     [Header("Scene Names")]
     public string titleSceneName = "00_TitleScene";
     public string tutorialSceneName = "01_TutorialScene";
-    public string homeSceneName = "02_HomeScene";
+    public string homeSceneName = "KBW";
     public string goalSceneName = "03_GoalScene";
     public string focusSceneName = "04_FocusScene";
     public string successSceneName = "05_SuccessScene";
@@ -85,20 +85,23 @@ public class SceneFlowManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(sceneName))
         {
-            Debug.LogError("[SceneFlow] ¾À ÀÌ¸§ÀÌ ºñ¾î ÀÖ½À´Ï´Ù.");
+            Debug.LogError("[SceneFlow] ì”¬ ì´ë¦„ì´ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.");
             return;
         }
 
         if (IsLoading)
         {
-            Debug.LogWarning("[SceneFlow] ÀÌ¹Ì ¾ÀÀ» ·Îµù ÁßÀÔ´Ï´Ù.");
+            Debug.LogWarning("[SceneFlow] ì´ë¯¸ ì”¬ì„ ë¡œë”© ì¤‘ì…ë‹ˆë‹¤.");
             return;
         }
+
+        if (SceneManager.GetActiveScene().name == sceneName)
+            return;
 
         if (!Application.CanStreamedLevelBeLoaded(sceneName))
         {
             Debug.LogError(
-                $"[SceneFlow] '{sceneName}' ¾ÀÀ» ºÒ·¯¿Ã ¼ö ¾ø½À´Ï´Ù. Build Settings ¶Ç´Â Build ProfileÀÇ Scene ¸ñ·Ï¿¡ Ãß°¡µÇ¾î ÀÖ´ÂÁö È®ÀÎÇÏ¼¼¿ä."
+                $"[SceneFlow] '{sceneName}' ì”¬ì„ ë¶ˆëŸ¬ì˜¬ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. Build Settings ë˜ëŠ” Build Profileì˜ Scene ëª©ë¡ì— ì¶”ê°€ë˜ì–´ ìˆëŠ”ì§€ í™•ì¸í•˜ì„¸ìš”."
             );
             return;
         }
@@ -110,7 +113,7 @@ public class SceneFlowManager : MonoBehaviour
     {
         IsLoading = true;
 
-        Debug.Log($"[SceneFlow] ¾À ÀÌµ¿: {sceneName}");
+        Debug.Log($"[SceneFlow] ì”¬ ì´ë™: {sceneName}");
 
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 

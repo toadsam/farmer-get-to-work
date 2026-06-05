@@ -24,7 +24,7 @@ public class CropPlot : MonoBehaviour
     public List<Transform> cropVisualRoots = new List<Transform>();
 
     [Header("Reward")]
-    [Tooltip("Ã¼Å©ÇÏ¸é ¹ç ¾ÈÀÇ ÀÛ¹° ½½·Ô ¼ö¸¸Å­ º¸»óÀ» Áö±ŞÇÕ´Ï´Ù.")]
+    [Tooltip("ì²´í¬í•˜ë©´ ë°­ ì•ˆì˜ ì‘ë¬¼ ìŠ¬ë¡¯ ìˆ˜ë§Œí¼ ë³´ìƒì„ ì§€ê¸‰í•©ë‹ˆë‹¤.")]
     public bool rewardBySlotCount = true;
 
     [Header("Planting")]
@@ -178,7 +178,7 @@ public class CropPlot : MonoBehaviour
 
         if (prefab == null)
         {
-            Debug.LogWarning($"[CropPlot] {plotId} ´Ü°è {state}¿¡ ÇØ´çÇÏ´Â ÇÁ¸®ÆÕÀÌ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning($"[CropPlot] {plotId} ë‹¨ê³„ {state}ì— í•´ë‹¹í•˜ëŠ” í”„ë¦¬íŒ¹ì´ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 

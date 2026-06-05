@@ -102,7 +102,7 @@ public class FarmHUD : MonoBehaviour
             {
                 case CropPlotState.Empty:
                     emptyCount++;
-                    detailBuilder.AppendLine($"{plot.plotId}: ºó ¹ç");
+                    detailBuilder.AppendLine($"{plot.plotId}: ë¹ˆ ë°­");
                     break;
 
                 case CropPlotState.Seed:
@@ -133,13 +133,13 @@ public class FarmHUD : MonoBehaviour
         if (cropSummaryText != null)
         {
             cropSummaryText.text =
-                $"¹ç »óÅÂ  ºó ¹ç {emptyCount} / ¼ºÀå Áß {seedCount + growingCount} / ¼öÈ® °¡´É {readyCount}";
+                $"ë°­ ìƒíƒœ  ë¹ˆ ë°­ {emptyCount} / ì„±ì¥ ì¤‘ {seedCount + growingCount} / ìˆ˜í™• ê°€ëŠ¥ {readyCount}";
         }
 
         if (cropDetailText != null)
         {
             if (activeCount == 0)
-                cropDetailText.text = "ÀÛ¹°ÀÌ ½É¾îÁø ¹çÀÌ ¾ø½À´Ï´Ù.";
+                cropDetailText.text = "ì‘ë¬¼ì´ ì‹¬ì–´ì§„ ë°­ì´ ì—†ìŠµë‹ˆë‹¤.";
             else
                 cropDetailText.text = detailBuilder.ToString();
         }
@@ -160,7 +160,7 @@ public class FarmHUD : MonoBehaviour
         if (next == null)
         {
             if (unlockText != null)
-                unlockText.text = $"ÇØ±İ ÁøÇàµµ {unlockManager.totalProgress} / ¸ğµç ±â´É ÇØ±İ ¿Ï·á";
+                unlockText.text = $"í•´ê¸ˆ ì§„í–‰ë„ {unlockManager.totalProgress} / ëª¨ë“  ê¸°ëŠ¥ í•´ê¸ˆ ì™„ë£Œ";
 
             if (unlockProgressSlider != null)
                 unlockProgressSlider.value = 1f;
@@ -174,7 +174,7 @@ public class FarmHUD : MonoBehaviour
         if (unlockText != null)
         {
             unlockText.text =
-                $"ÇØ±İ ÁøÇàµµ {current} / {required} - ´ÙÀ½: {next.displayName}";
+                $"í•´ê¸ˆ ì§„í–‰ë„ {current} / {required} - ë‹¤ìŒ: {next.displayName}";
         }
 
         if (unlockProgressSlider != null)
@@ -185,7 +185,7 @@ public class FarmHUD : MonoBehaviour
 
     private void AppendPlotGrowthLine(CropPlot plot, StringBuilder builder)
     {
-        string cropName = "ÀÛ¹°";
+        string cropName = "ì‘ë¬¼";
 
         if (plot.currentCrop != null && !string.IsNullOrEmpty(plot.currentCrop.displayName))
             cropName = plot.currentCrop.displayName;

@@ -72,7 +72,7 @@ public class IslandSetManager : MonoBehaviour
                 islandSets.Add(islandSet);
         }
 
-        Debug.Log($"[IslandSetManager] ¼¶ ¼¼Æ® ¼öÁı ¿Ï·á / {islandSets.Count}°³");
+        Debug.Log($"[IslandSetManager] ì„¬ ì„¸íŠ¸ ìˆ˜ì§‘ ì™„ë£Œ / {islandSets.Count}ê°œ");
     }
 
     public int GetCurrentUnlockProgress()
@@ -120,7 +120,7 @@ public class IslandSetManager : MonoBehaviour
 
         if (islandSet == null)
         {
-            Debug.LogWarning($"[IslandSetManager] islandId '{islandId}' ¼¶À» Ã£Áö ¸øÇß½À´Ï´Ù.", this);
+            Debug.LogWarning($"[IslandSetManager] islandId '{islandId}' ì„¬ì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
             return false;
         }
 
@@ -209,7 +209,7 @@ public class IslandSetManager : MonoBehaviour
         RefreshUnlocksFromCurrentProgress();
         ApplyAllVisualStates();
 
-        Debug.Log("[IslandSetManager] ¼¶ »óÅÂ ºÒ·¯¿À±â ¿Ï·á");
+        Debug.Log("[IslandSetManager] ì„¬ ìƒíƒœ ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ");
     }
 
     public void AddGrowthToActivatedIslandCrops(int amount)
@@ -247,7 +247,7 @@ public class IslandSetManager : MonoBehaviour
             islandSet.ResetToInitialState();
         }
 
-        Debug.Log("[IslandSetManager] ¸ğµç Ãß°¡ ¼¶ ÃÊ±âÈ­ ¿Ï·á");
+        Debug.Log("[IslandSetManager] ëª¨ë“  ì¶”ê°€ ì„¬ ì´ˆê¸°í™” ì™„ë£Œ");
     }
 
     [ContextMenu("Test Refresh Unlocks")]
@@ -263,7 +263,7 @@ public class IslandSetManager : MonoBehaviour
 
         if (islandSet == null)
         {
-            Debug.Log("[IslandSetManager] È°¼ºÈ­ °¡´ÉÇÑ ºó ¼¶ÀÌ ¾ø½À´Ï´Ù.");
+            Debug.Log("[IslandSetManager] í™œì„±í™” ê°€ëŠ¥í•œ ë¹ˆ ì„¬ì´ ì—†ìŠµë‹ˆë‹¤.");
             return;
         }
 

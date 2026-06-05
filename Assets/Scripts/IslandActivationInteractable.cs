@@ -6,8 +6,8 @@ public class IslandActivationInteractable : MonoBehaviour
     public IslandSetController islandSet;
 
     [Header("Message")]
-    public string lockedMessage = "¾ÆÁ÷ ÇØ±İµÇÁö ¾ÊÀº ¼¶ÀÔ´Ï´Ù.";
-    public string alreadyActivatedMessage = "ÀÌ¹Ì È°¼ºÈ­µÈ ¼¶ÀÔ´Ï´Ù.";
+    public string lockedMessage = "ì•„ì§ í•´ê¸ˆë˜ì§€ ì•Šì€ ì„¬ì…ë‹ˆë‹¤.";
+    public string alreadyActivatedMessage = "ì´ë¯¸ í™œì„±í™”ëœ ì„¬ì…ë‹ˆë‹¤.";
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class IslandActivationInteractable : MonoBehaviour
     {
         if (islandSet == null)
         {
-            reason = "¿¬°áµÈ ¼¶ Á¤º¸°¡ ¾ø½À´Ï´Ù.";
+            reason = "ì—°ê²°ëœ ì„¬ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.";
             return false;
         }
 

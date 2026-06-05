@@ -142,7 +142,7 @@ public class IslandLongPressInteractor : MonoBehaviour
             CancelPress();
 
             if (logDebug)
-                Debug.Log("[IslandLongPress] ÀÌµ¿·® ÃÊ°ú·Î Ãë¼Ò");
+                Debug.Log("[IslandLongPress] ì´ë™ëŸ‰ ì´ˆê³¼ë¡œ ì·¨ì†Œ");
 
             return;
         }
@@ -163,7 +163,7 @@ public class IslandLongPressInteractor : MonoBehaviour
 
         if (!currentTarget.CanShowActivationPopup(out string reason))
         {
-            Debug.Log($"[IslandLongPress] È°¼ºÈ­ ºÒ°¡: {reason}");
+            Debug.Log($"[IslandLongPress] í™œì„±í™” ë¶ˆê°€: {reason}");
             return;
         }
 
@@ -175,7 +175,7 @@ public class IslandLongPressInteractor : MonoBehaviour
         {
             if (!activateImmediatelyWhenNoPopup)
             {
-                Debug.Log("[IslandLongPress] ÆË¾÷ UI°¡ ¾ÆÁ÷ ¿¬°áµÇÁö ¾Ê¾Æ È°¼ºÈ­ ¿äÃ»¸¸ °¨ÁöÇß½À´Ï´Ù.");
+                Debug.Log("[IslandLongPress] íŒì—… UIê°€ ì•„ì§ ì—°ê²°ë˜ì§€ ì•Šì•„ í™œì„±í™” ìš”ì²­ë§Œ ê°ì§€í–ˆìŠµë‹ˆë‹¤.");
                 return;
             }
 
@@ -211,7 +211,7 @@ public class IslandLongPressInteractor : MonoBehaviour
 
         if (mainCamera == null)
         {
-            Debug.LogError("[IslandLongPress] Main Camera°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogError("[IslandLongPress] Main Cameraê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return null;
         }
 

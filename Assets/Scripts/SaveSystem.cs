@@ -125,7 +125,7 @@ public class SaveSystem : MonoBehaviour
 
         if (currentSaveData == null)
         {
-            Debug.LogWarning("[SaveSystem] ÀúÀåÇÒ µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[SaveSystem] ì €ì¥í•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -139,7 +139,7 @@ public class SaveSystem : MonoBehaviour
 
         File.WriteAllText(SavePath, json);
 
-        Debug.Log($"[SaveSystem] ÀúÀå ¿Ï·á: {SavePath}");
+        Debug.Log($"[SaveSystem] ì €ì¥ ì™„ë£Œ: {SavePath}");
     }
 
     public bool LoadGame()
@@ -147,7 +147,7 @@ public class SaveSystem : MonoBehaviour
         if (!File.Exists(SavePath))
         {
             currentSaveData = GameSaveData.CreateNew();
-            Debug.Log("[SaveSystem] ÀúÀå ÆÄÀÏÀÌ ¾ø¾î »õ µ¥ÀÌÅÍ¸¦ »ı¼ºÇß½À´Ï´Ù.");
+            Debug.Log("[SaveSystem] ì €ì¥ íŒŒì¼ì´ ì—†ì–´ ìƒˆ ë°ì´í„°ë¥¼ ìƒì„±í–ˆìŠµë‹ˆë‹¤.");
             ApplyLoadedDataToRuntimeManagers();
             ApplyLoadedDataToSceneManagers();
             return false;
@@ -158,7 +158,7 @@ public class SaveSystem : MonoBehaviour
         if (string.IsNullOrEmpty(json))
         {
             currentSaveData = GameSaveData.CreateNew();
-            Debug.LogWarning("[SaveSystem] ÀúÀå ÆÄÀÏÀÌ ºñ¾î ÀÖ¾î »õ µ¥ÀÌÅÍ¸¦ »ı¼ºÇß½À´Ï´Ù.");
+            Debug.LogWarning("[SaveSystem] ì €ì¥ íŒŒì¼ì´ ë¹„ì–´ ìˆì–´ ìƒˆ ë°ì´í„°ë¥¼ ìƒì„±í–ˆìŠµë‹ˆë‹¤.");
             return false;
         }
 
@@ -167,14 +167,14 @@ public class SaveSystem : MonoBehaviour
         if (currentSaveData == null)
         {
             currentSaveData = GameSaveData.CreateNew();
-            Debug.LogWarning("[SaveSystem] ÀúÀå µ¥ÀÌÅÍ ÆÄ½Ì¿¡ ½ÇÆĞÇØ »õ µ¥ÀÌÅÍ¸¦ »ı¼ºÇß½À´Ï´Ù.");
+            Debug.LogWarning("[SaveSystem] ì €ì¥ ë°ì´í„° íŒŒì‹±ì— ì‹¤íŒ¨í•´ ìƒˆ ë°ì´í„°ë¥¼ ìƒì„±í–ˆìŠµë‹ˆë‹¤.");
             return false;
         }
 
         ApplyLoadedDataToRuntimeManagers();
         ApplyLoadedDataToSceneManagers();
 
-        Debug.Log($"[SaveSystem] ºÒ·¯¿À±â ¿Ï·á: {SavePath}");
+        Debug.Log($"[SaveSystem] ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ: {SavePath}");
         return true;
     }
 
@@ -407,7 +407,7 @@ public class SaveSystem : MonoBehaviour
 
         SaveGame();
 
-        Debug.Log("[SaveSystem] ÀúÀå µ¥ÀÌÅÍ ÃÊ±âÈ­ ¿Ï·á");
+        Debug.Log("[SaveSystem] ì €ì¥ ë°ì´í„° ì´ˆê¸°í™” ì™„ë£Œ");
     }
 
     [ContextMenu("Debug Save Game")]

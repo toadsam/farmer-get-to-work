@@ -6,13 +6,13 @@ using UnityEngine;
 public class FocusMusicTrack
 {
     public string trackId = "Track_01";
-    public string displayName = "±âº» ÁıÁß À½¾Ç";
+    public string displayName = "ê¸°ë³¸ ì§‘ì¤‘ ìŒì•…";
 
     public AudioClip clip;
 
     public bool unlockedByDefault = true;
 
-    [Tooltip("ÇØ±İ ÁøÇàµµ°¡ ÀÌ °ª ÀÌ»óÀÌ¸é ÇØ±İµË´Ï´Ù.")]
+    [Tooltip("í•´ê¸ˆ ì§„í–‰ë„ê°€ ì´ ê°’ ì´ìƒì´ë©´ í•´ê¸ˆë©ë‹ˆë‹¤.")]
     public int requiredUnlockProgress = 0;
 
     public bool loop = true;
@@ -75,7 +75,7 @@ public class FocusMusicPlayer : MonoBehaviour
         BindFocusSessionService();
         RefreshUnlockedTracksFromCurrentProgress();
 
-        // GoalScene¿¡¼­ ¼¼¼ÇÀÌ ¸ÕÀú ½ÃÀÛµÇ°í FocusScene¿¡¼­ À½¾Ç ¶óÀÌºê·¯¸®°¡ ³ªÁß¿¡ µî·ÏµÇ´Â °æ¿ì ´ëºñ
+        // GoalSceneì—ì„œ ì„¸ì…˜ì´ ë¨¼ì € ì‹œì‘ë˜ê³  FocusSceneì—ì„œ ìŒì•… ë¼ì´ë¸ŒëŸ¬ë¦¬ê°€ ë‚˜ì¤‘ì— ë“±ë¡ë˜ëŠ” ê²½ìš° ëŒ€ë¹„
         TryPlayIfSessionRunning();
     }
 
@@ -164,7 +164,7 @@ public class FocusMusicPlayer : MonoBehaviour
         RefreshUnlockedTracksFromCurrentProgress();
         TryPlayIfSessionRunning();
 
-        Debug.Log($"[FocusMusicPlayer] À½¾Ç µî·Ï ¿Ï·á / ÀüÃ¼ {tracks.Count}°³");
+        Debug.Log($"[FocusMusicPlayer] ìŒì•… ë“±ë¡ ì™„ë£Œ / ì „ì²´ {tracks.Count}ê°œ");
     }
 
     public void PlayFocusMusic()
@@ -173,7 +173,7 @@ public class FocusMusicPlayer : MonoBehaviour
 
         if (track == null)
         {
-            Debug.LogWarning("[FocusMusicPlayer] Àç»ı °¡´ÉÇÑ À½¾ÇÀÌ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusMusicPlayer] ì¬ìƒ ê°€ëŠ¥í•œ ìŒì•…ì´ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -186,21 +186,21 @@ public class FocusMusicPlayer : MonoBehaviour
 
         if (track == null)
         {
-            Debug.LogWarning($"[FocusMusicPlayer] trackId '{trackId}' À½¾ÇÀ» Ã£Áö ¸øÇß½À´Ï´Ù.", this);
+            Debug.LogWarning($"[FocusMusicPlayer] trackId '{trackId}' ìŒì•…ì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
             PlayFocusMusic();
             return;
         }
 
         if (!IsTrackUnlocked(track.trackId))
         {
-            Debug.LogWarning($"[FocusMusicPlayer] ¾ÆÁ÷ ÇØ±İµÇÁö ¾ÊÀº À½¾ÇÀÔ´Ï´Ù: {track.displayName}", this);
+            Debug.LogWarning($"[FocusMusicPlayer] ì•„ì§ í•´ê¸ˆë˜ì§€ ì•Šì€ ìŒì•…ì…ë‹ˆë‹¤: {track.displayName}", this);
             PlayFocusMusic();
             return;
         }
 
         if (track.clip == null)
         {
-            Debug.LogWarning($"[FocusMusicPlayer] AudioClipÀÌ ¾ø½À´Ï´Ù: {track.displayName}", this);
+            Debug.LogWarning($"[FocusMusicPlayer] AudioClipì´ ì—†ìŠµë‹ˆë‹¤: {track.displayName}", this);
             return;
         }
 
@@ -215,7 +215,7 @@ public class FocusMusicPlayer : MonoBehaviour
         CurrentTrack = track;
         lastTrackIndex = tracks.IndexOf(track);
 
-        Debug.Log($"[FocusMusicPlayer] À½¾Ç Àç»ı: {track.displayName}");
+        Debug.Log($"[FocusMusicPlayer] ìŒì•… ì¬ìƒ: {track.displayName}");
         OnMusicStarted?.Invoke(track);
     }
 
@@ -226,7 +226,7 @@ public class FocusMusicPlayer : MonoBehaviour
 
         CurrentTrack = null;
 
-        Debug.Log("[FocusMusicPlayer] À½¾Ç Á¤Áö");
+        Debug.Log("[FocusMusicPlayer] ìŒì•… ì •ì§€");
         OnMusicStopped?.Invoke();
     }
 
@@ -275,7 +275,7 @@ public class FocusMusicPlayer : MonoBehaviour
                 unlockedTrackIds.Add(track.trackId);
                 newlyUnlockedTracks.Add(track);
 
-                Debug.Log($"[FocusMusicPlayer] À½¾Ç ÇØ±İ: {track.displayName}");
+                Debug.Log($"[FocusMusicPlayer] ìŒì•… í•´ê¸ˆ: {track.displayName}");
                 OnTrackUnlocked?.Invoke(track);
             }
         }
@@ -298,7 +298,7 @@ public class FocusMusicPlayer : MonoBehaviour
 
         unlockedTrackIds.Add(trackId);
 
-        Debug.Log($"[FocusMusicPlayer] À½¾Ç ¼öµ¿ ÇØ±İ: {track.displayName}");
+        Debug.Log($"[FocusMusicPlayer] ìŒì•… ìˆ˜ë™ í•´ê¸ˆ: {track.displayName}");
         OnTrackUnlocked?.Invoke(track);
 
         return true;
@@ -369,7 +369,7 @@ public class FocusMusicPlayer : MonoBehaviour
         EnsureDefaultUnlockedTracks();
         RefreshUnlockedTracksFromCurrentProgress();
 
-        Debug.Log($"[FocusMusicPlayer] ÇØ±İ À½¾Ç ºÒ·¯¿À±â ¿Ï·á / {unlockedTrackIds.Count}°³");
+        Debug.Log($"[FocusMusicPlayer] í•´ê¸ˆ ìŒì•… ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ / {unlockedTrackIds.Count}ê°œ");
     }
 
     private void EnsureDefaultUnlockedTracks()

@@ -14,7 +14,7 @@ public class FocusSessionService : MonoBehaviour
     public RewardProcessor rewardProcessor;
 
     [Header("Scene Flow")]
-    [Tooltip("¼¼¼Ç Á¾·á ÈÄ ÀÚµ¿À¸·Î SuccessScene / FailSceneÀ¸·Î ÀÌµ¿ÇÒÁö ¿©ºÎÀÔ´Ï´Ù. UI ÅëÇÕ Àü¿¡´Â ²¨µÎ´Â °ÍÀ» ±ÇÀåÇÕ´Ï´Ù.")]
+    [Tooltip("ì„¸ì…˜ ì¢…ë£Œ í›„ ìë™ìœ¼ë¡œ SuccessScene / FailSceneìœ¼ë¡œ ì´ë™í• ì§€ ì—¬ë¶€ì…ë‹ˆë‹¤. UI í†µí•© ì „ì—ëŠ” êº¼ë‘ëŠ” ê²ƒì„ ê¶Œì¥í•©ë‹ˆë‹¤.")]
     public bool autoMoveSceneOnFinish = false;
 
     [Header("Runtime")]
@@ -132,13 +132,13 @@ public class FocusSessionService : MonoBehaviour
 
         if (gameStateManager == null)
         {
-            Debug.LogError("[FocusSessionService] GameStateManager°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogError("[FocusSessionService] GameStateManagerê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return false;
         }
 
         if (!gameStateManager.HasSelectedSession)
         {
-            Debug.LogWarning("[FocusSessionService] ¼±ÅÃµÈ ¼¼¼Ç ¼³Á¤ÀÌ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusSessionService] ì„ íƒëœ ì„¸ì…˜ ì„¤ì •ì´ ì—†ìŠµë‹ˆë‹¤.", this);
             return false;
         }
 
@@ -149,13 +149,13 @@ public class FocusSessionService : MonoBehaviour
     {
         if (IsRunning)
         {
-            Debug.LogWarning("[FocusSessionService] ÀÌ¹Ì ¼¼¼ÇÀÌ ÁøÇà ÁßÀÔ´Ï´Ù.", this);
+            Debug.LogWarning("[FocusSessionService] ì´ë¯¸ ì„¸ì…˜ì´ ì§„í–‰ ì¤‘ì…ë‹ˆë‹¤.", this);
             return false;
         }
 
         if (config == null || !config.IsValid())
         {
-            Debug.LogWarning("[FocusSessionService] À¯È¿ÇÏÁö ¾ÊÀº ¼¼¼Ç ¼³Á¤ÀÔ´Ï´Ù.", this);
+            Debug.LogWarning("[FocusSessionService] ìœ íš¨í•˜ì§€ ì•Šì€ ì„¸ì…˜ ì„¤ì •ì…ë‹ˆë‹¤.", this);
             return false;
         }
 
@@ -179,8 +179,8 @@ public class FocusSessionService : MonoBehaviour
         appFocusTracker?.ResetAndStartTracking();
 
         Debug.Log(
-            $"[FocusSessionService] ¼¼¼Ç ½ÃÀÛ / ¸ñÇ¥: {copiedConfig.goalName}, " +
-            $"°èÈ¹: {copiedConfig.plannedMinutes}ºĞ, ½ÇÁ¦ ÁøÇà ½Ã°£: {runtimeData.durationSeconds:F1}ÃÊ"
+            $"[FocusSessionService] ì„¸ì…˜ ì‹œì‘ / ëª©í‘œ: {copiedConfig.goalName}, " +
+            $"ê³„íš: {copiedConfig.plannedMinutes}ë¶„, ì‹¤ì œ ì§„í–‰ ì‹œê°„: {runtimeData.durationSeconds:F1}ì´ˆ"
         );
 
         OnSessionStarted?.Invoke(runtimeData);
@@ -192,7 +192,7 @@ public class FocusSessionService : MonoBehaviour
     {
         if (!IsRunning)
         {
-            Debug.LogWarning("[FocusSessionService] Ãë¼ÒÇÒ ¼¼¼ÇÀÌ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusSessionService] ì·¨ì†Œí•  ì„¸ì…˜ì´ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -215,7 +215,7 @@ public class FocusSessionService : MonoBehaviour
     {
         if (!IsRunning)
         {
-            Debug.LogWarning("[FocusSessionService] ¿Ï·áÇÒ ¼¼¼ÇÀÌ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusSessionService] ì™„ë£Œí•  ì„¸ì…˜ì´ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -226,7 +226,7 @@ public class FocusSessionService : MonoBehaviour
     {
         if (runtimeData == null || runtimeData.config == null)
         {
-            Debug.LogWarning("[FocusSessionService] Á¾·áÇÒ ¼¼¼Ç µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusSessionService] ì¢…ë£Œí•  ì„¸ì…˜ ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -276,15 +276,15 @@ public class FocusSessionService : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[FocusSessionService] RewardProcessor°¡ ¾ø¾î º¸»ó °è»êÀ» Àû¿ëÇÏÁö ¸øÇß½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusSessionService] RewardProcessorê°€ ì—†ì–´ ë³´ìƒ ê³„ì‚°ì„ ì ìš©í•˜ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
             LastRewardResult = null;
             gameStateManager?.SaveLastSessionResult(result, null);
         }
 
         Debug.Log(
-            $"[FocusSessionService] ¼¼¼Ç Á¾·á / »çÀ¯: {reason}, " +
-            $"¸ñÇ¥: {result.goalName}, ¼º°ø°ª: {result.success}, " +
-            $"ÁıÁß {result.focusedMinutes}ºĞ, ÀÌÅ» {result.exitCount}È¸, {result.totalExitSeconds:F1}ÃÊ"
+            $"[FocusSessionService] ì„¸ì…˜ ì¢…ë£Œ / ì‚¬ìœ : {reason}, " +
+            $"ëª©í‘œ: {result.goalName}, ì„±ê³µê°’: {result.success}, " +
+            $"ì§‘ì¤‘ {result.focusedMinutes}ë¶„, ì´íƒˆ {result.exitCount}íšŒ, {result.totalExitSeconds:F1}ì´ˆ"
         );
 
         OnSessionFinished?.Invoke(result, LastRewardResult);
@@ -340,7 +340,7 @@ public class FocusSessionService : MonoBehaviour
 
     public string GetExitInfoText()
     {
-        return $"ÀÌÅ» {CurrentExitCount}È¸ / {CurrentTotalExitSeconds:F1}ÃÊ";
+        return $"ì´íƒˆ {CurrentExitCount}íšŒ / {CurrentTotalExitSeconds:F1}ì´ˆ";
     }
 
     [ContextMenu("Test Start Study 10 Sec")]
@@ -348,7 +348,7 @@ public class FocusSessionService : MonoBehaviour
     {
         FocusSessionConfig config = FocusSessionConfig.Create(
             goalType: "Study",
-            goalName: "°øºÎÇÏ±â",
+            goalName: "ê³µë¶€í•˜ê¸°",
             plannedMinutes: 10,
             rewardMinutes: 10,
             useTestDuration: true,
@@ -368,7 +368,7 @@ public class FocusSessionService : MonoBehaviour
     {
         FocusSessionConfig config = FocusSessionConfig.Create(
             goalType: "Study",
-            goalName: "°øºÎÇÏ±â",
+            goalName: "ê³µë¶€í•˜ê¸°",
             plannedMinutes: 30,
             rewardMinutes: 30,
             useTestDuration: true,

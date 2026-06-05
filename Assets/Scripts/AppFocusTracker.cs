@@ -3,7 +3,7 @@ using UnityEngine;
 public class AppFocusTracker : MonoBehaviour
 {
     [Header("Editor Test")]
-    [Tooltip("¿¡µğÅÍ¿¡¼­ Ã¢ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§µµ ÀÌÅ»·Î ±â·ÏÇÒÁö ¿©ºÎÀÔ´Ï´Ù. ½ÇÁ¦ Android Å×½ºÆ® Àü¿¡´Â ²¨µÎ´Â °ÍÀ» ±ÇÀåÇÕ´Ï´Ù.")]
+    [Tooltip("ì—ë””í„°ì—ì„œ ì°½ í¬ì»¤ìŠ¤ë¥¼ ìƒì—ˆì„ ë•Œë„ ì´íƒˆë¡œ ê¸°ë¡í• ì§€ ì—¬ë¶€ì…ë‹ˆë‹¤. ì‹¤ì œ Android í…ŒìŠ¤íŠ¸ ì „ì—ëŠ” êº¼ë‘ëŠ” ê²ƒì„ ê¶Œì¥í•©ë‹ˆë‹¤.")]
     public bool trackInEditor = false;
 
     public bool IsTracking { get; private set; }
@@ -20,7 +20,7 @@ public class AppFocusTracker : MonoBehaviour
         isOutOfApp = false;
         IsTracking = true;
 
-        Debug.Log("[AppFocusTracker] ÀÌÅ» °¨Áö ½ÃÀÛ");
+        Debug.Log("[AppFocusTracker] ì´íƒˆ ê°ì§€ ì‹œì‘");
     }
 
     public void StopTracking()
@@ -28,7 +28,7 @@ public class AppFocusTracker : MonoBehaviour
         FinalizeCurrentExitIfNeeded();
         IsTracking = false;
 
-        Debug.Log($"[AppFocusTracker] ÀÌÅ» °¨Áö Á¾·á / È½¼ö: {ExitCount}, ÃÑ ½Ã°£: {TotalExitSeconds:F1}ÃÊ");
+        Debug.Log($"[AppFocusTracker] ì´íƒˆ ê°ì§€ ì¢…ë£Œ / íšŸìˆ˜: {ExitCount}, ì´ ì‹œê°„: {TotalExitSeconds:F1}ì´ˆ");
     }
 
     public float GetTotalExitSeconds()
@@ -87,7 +87,7 @@ public class AppFocusTracker : MonoBehaviour
         ExitCount++;
         exitStartRealtime = Time.realtimeSinceStartup;
 
-        Debug.Log("[AppFocusTracker] ¾Û ÀÌÅ» °¨Áö");
+        Debug.Log("[AppFocusTracker] ì•± ì´íƒˆ ê°ì§€");
     }
 
     private void EndExit()
@@ -99,7 +99,7 @@ public class AppFocusTracker : MonoBehaviour
         TotalExitSeconds += duration;
         isOutOfApp = false;
 
-        Debug.Log($"[AppFocusTracker] ¾Û º¹±Í / ÀÌÅ» ½Ã°£: {duration:F1}ÃÊ / ´©Àû: {TotalExitSeconds:F1}ÃÊ");
+        Debug.Log($"[AppFocusTracker] ì•± ë³µê·€ / ì´íƒˆ ì‹œê°„: {duration:F1}ì´ˆ / ëˆ„ì : {TotalExitSeconds:F1}ì´ˆ");
     }
 
     private void FinalizeCurrentExitIfNeeded()
@@ -114,14 +114,14 @@ public class AppFocusTracker : MonoBehaviour
     {
         if (!IsTracking)
         {
-            Debug.LogWarning("[AppFocusTracker] °¨Áö ÁßÀÌ ¾Æ´Õ´Ï´Ù. ¼¼¼Ç ½ÃÀÛ ÈÄ Å×½ºÆ®ÇÏ¼¼¿ä.", this);
+            Debug.LogWarning("[AppFocusTracker] ê°ì§€ ì¤‘ì´ ì•„ë‹™ë‹ˆë‹¤. ì„¸ì…˜ ì‹œì‘ í›„ í…ŒìŠ¤íŠ¸í•˜ì„¸ìš”.", this);
             return;
         }
 
         ExitCount++;
         TotalExitSeconds += seconds;
 
-        Debug.Log($"[AppFocusTracker] Å×½ºÆ® ÀÌÅ» Ãß°¡ / +{seconds:F1}ÃÊ / È½¼ö: {ExitCount}, ÃÑ ½Ã°£: {TotalExitSeconds:F1}ÃÊ");
+        Debug.Log($"[AppFocusTracker] í…ŒìŠ¤íŠ¸ ì´íƒˆ ì¶”ê°€ / +{seconds:F1}ì´ˆ / íšŸìˆ˜: {ExitCount}, ì´ ì‹œê°„: {TotalExitSeconds:F1}ì´ˆ");
     }
 
     [ContextMenu("Debug Add Short Exit 45s")]
@@ -143,6 +143,6 @@ public class AppFocusTracker : MonoBehaviour
         TotalExitSeconds = 0f;
         isOutOfApp = false;
 
-        Debug.Log("[AppFocusTracker] Å×½ºÆ® ÀÌÅ» µ¥ÀÌÅÍ ÃÊ±âÈ­");
+        Debug.Log("[AppFocusTracker] í…ŒìŠ¤íŠ¸ ì´íƒˆ ë°ì´í„° ì´ˆê¸°í™”");
     }
 }

@@ -42,15 +42,15 @@ public class GameStateManager : MonoBehaviour
     {
         if (config == null || !config.IsValid())
         {
-            Debug.LogWarning("[GameState] À¯È¿ÇÏÁö ¾ÊÀº ¼¼¼Ç ¼³Á¤ÀÔ´Ï´Ù.", this);
+            Debug.LogWarning("[GameState] ìœ íš¨í•˜ì§€ ì•Šì€ ì„¸ì…˜ ì„¤ì •ì…ë‹ˆë‹¤.", this);
             return;
         }
 
         selectedSessionConfig = config;
 
         Debug.Log(
-            $"[GameState] ¼¼¼Ç ¼³Á¤ ÀúÀå: {config.goalName}, " +
-            $"°èÈ¹ {config.plannedMinutes}ºĞ, º¸»ó {config.rewardMinutes}ºĞ"
+            $"[GameState] ì„¸ì…˜ ì„¤ì • ì €ì¥: {config.goalName}, " +
+            $"ê³„íš {config.plannedMinutes}ë¶„, ë³´ìƒ {config.rewardMinutes}ë¶„"
         );
     }
 
@@ -78,7 +78,7 @@ public class GameStateManager : MonoBehaviour
     public void ClearSelectedSession()
     {
         selectedSessionConfig = new FocusSessionConfig();
-        Debug.Log("[GameState] ¼±ÅÃ ¼¼¼Ç ÃÊ±âÈ­");
+        Debug.Log("[GameState] ì„ íƒ ì„¸ì…˜ ì´ˆê¸°í™”");
     }
 
     public void SaveLastSessionResult(
@@ -91,17 +91,17 @@ public class GameStateManager : MonoBehaviour
 
         if (result == null)
         {
-            Debug.LogWarning("[GameState] ÀúÀåÇÒ ¼¼¼Ç °á°ú°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[GameState] ì €ì¥í•  ì„¸ì…˜ ê²°ê³¼ê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
         string resultText = rewardResult != null && rewardResult.finalSuccess
-            ? "¼º°ø"
-            : "½ÇÆĞ";
+            ? "ì„±ê³µ"
+            : "ì‹¤íŒ¨";
 
         Debug.Log(
-            $"[GameState] ¸¶Áö¸· ¼¼¼Ç °á°ú ÀúÀå: {result.goalName}, {resultText}, " +
-            $"ÁıÁß {result.focusedMinutes}ºĞ"
+            $"[GameState] ë§ˆì§€ë§‰ ì„¸ì…˜ ê²°ê³¼ ì €ì¥: {result.goalName}, {resultText}, " +
+            $"ì§‘ì¤‘ {result.focusedMinutes}ë¶„"
         );
     }
 
@@ -110,6 +110,6 @@ public class GameStateManager : MonoBehaviour
         lastSessionResult = null;
         lastRewardResult = null;
 
-        Debug.Log("[GameState] ¸¶Áö¸· ¼¼¼Ç °á°ú ÃÊ±âÈ­");
+        Debug.Log("[GameState] ë§ˆì§€ë§‰ ì„¸ì…˜ ê²°ê³¼ ì´ˆê¸°í™”");
     }
 }

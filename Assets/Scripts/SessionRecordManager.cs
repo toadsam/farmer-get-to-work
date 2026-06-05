@@ -13,7 +13,7 @@ public class SessionRecordManager : MonoBehaviour
     public List<FocusSessionRecordData> records = new List<FocusSessionRecordData>();
 
     [Header("Limit")]
-    [Tooltip("±â·ÏÀÌ ³Ê¹« ¸¹¾ÆÁö´Â °ÍÀ» ¸·±â À§ÇÑ ÃÖ´ë º¸°ü °³¼öÀÔ´Ï´Ù.")]
+    [Tooltip("ê¸°ë¡ì´ ë„ˆë¬´ ë§ì•„ì§€ëŠ” ê²ƒì„ ë§‰ê¸° ìœ„í•œ ìµœëŒ€ ë³´ê´€ ê°œìˆ˜ì…ë‹ˆë‹¤.")]
     public int maxRecordCount = 500;
 
     private void Awake()
@@ -44,14 +44,14 @@ public class SessionRecordManager : MonoBehaviour
 
         if (focusSessionService == null)
         {
-            Debug.LogWarning("[SessionRecord] FocusSessionService¸¦ Ã£Áö ¸øÇß½À´Ï´Ù.", this);
+            Debug.LogWarning("[SessionRecord] FocusSessionServiceë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
             return;
         }
 
         focusSessionService.OnSessionFinished -= HandleSessionFinished;
         focusSessionService.OnSessionFinished += HandleSessionFinished;
 
-        Debug.Log("[SessionRecord] FocusSessionService ÀÌº¥Æ® ¿¬°á ¿Ï·á");
+        Debug.Log("[SessionRecord] FocusSessionService ì´ë²¤íŠ¸ ì—°ê²° ì™„ë£Œ");
     }
 
     private void UnbindFocusSessionService()
@@ -80,7 +80,7 @@ public class SessionRecordManager : MonoBehaviour
 
         if (record == null)
         {
-            Debug.LogWarning("[SessionRecord] Ãß°¡ÇÒ ±â·ÏÀÌ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[SessionRecord] ì¶”ê°€í•  ê¸°ë¡ì´ ì—†ìŠµë‹ˆë‹¤.", this);
             return null;
         }
 
@@ -109,8 +109,8 @@ public class SessionRecordManager : MonoBehaviour
         TrimRecordsIfNeeded();
 
         Debug.Log(
-            $"[SessionRecord] ±â·Ï Ãß°¡ / {record.dateKey}, {record.goalName}, " +
-            $"¼º°ø {record.success}, ÁıÁß {record.focusedMinutes}ºĞ"
+            $"[SessionRecord] ê¸°ë¡ ì¶”ê°€ / {record.dateKey}, {record.goalName}, " +
+            $"ì„±ê³µ {record.success}, ì§‘ì¤‘ {record.focusedMinutes}ë¶„"
         );
     }
 
@@ -293,13 +293,13 @@ public class SessionRecordManager : MonoBehaviour
 
         TrimRecordsIfNeeded();
 
-        Debug.Log($"[SessionRecord] ±â·Ï ºÒ·¯¿À±â ¿Ï·á / {records.Count}°³");
+        Debug.Log($"[SessionRecord] ê¸°ë¡ ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ / {records.Count}ê°œ");
     }
 
     public void ClearRecords()
     {
         records.Clear();
-        Debug.Log("[SessionRecord] ¸ğµç ±â·Ï »èÁ¦");
+        Debug.Log("[SessionRecord] ëª¨ë“  ê¸°ë¡ ì‚­ì œ");
     }
 
     [ContextMenu("Test Add Success Record")]
@@ -308,7 +308,7 @@ public class SessionRecordManager : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "°øºÎÇÏ±â",
+            goalName = "ê³µë¶€í•˜ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 30,
             success = true,
@@ -336,7 +336,7 @@ public class SessionRecordManager : MonoBehaviour
         FocusSessionResult result = new FocusSessionResult
         {
             goalType = "Study",
-            goalName = "°øºÎÇÏ±â",
+            goalName = "ê³µë¶€í•˜ê¸°",
             plannedMinutes = 30,
             focusedMinutes = 8,
             success = false,
@@ -348,7 +348,7 @@ public class SessionRecordManager : MonoBehaviour
 
         RewardResultData reward = RewardResultData.CreateFailure(
             reasonCode: "LongExit",
-            reasonMessage: "¾Û ÀÌÅ» ½Ã°£ÀÌ ±æ¾î ÁıÁß Èå¸§ÀÌ ²÷°å½À´Ï´Ù.",
+            reasonMessage: "ì•± ì´íƒˆ ì‹œê°„ì´ ê¸¸ì–´ ì§‘ì¤‘ íë¦„ì´ ëŠê²¼ìŠµë‹ˆë‹¤.",
             focusedMinutes: 8
         );
 
@@ -361,10 +361,10 @@ public class SessionRecordManager : MonoBehaviour
         SessionSummaryData summary = GetTodaySummary();
 
         Debug.Log(
-            $"[SessionRecord] ¿À´Ã ¿ä¾à / ¼¼¼Ç {summary.totalSessionCount}È¸, " +
-            $"¼º°ø {summary.successSessionCount}È¸, ½ÇÆĞ {summary.failSessionCount}È¸, " +
-            $"ÁıÁß {summary.totalFocusedMinutes}ºĞ, ÀÌÅ» {summary.totalExitCount}È¸, " +
-            $"ÀÌÅ» ½Ã°£ {summary.totalExitSeconds:F1}ÃÊ, ¼º°ø·ü {summary.successRate:P0}"
+            $"[SessionRecord] ì˜¤ëŠ˜ ìš”ì•½ / ì„¸ì…˜ {summary.totalSessionCount}íšŒ, " +
+            $"ì„±ê³µ {summary.successSessionCount}íšŒ, ì‹¤íŒ¨ {summary.failSessionCount}íšŒ, " +
+            $"ì§‘ì¤‘ {summary.totalFocusedMinutes}ë¶„, ì´íƒˆ {summary.totalExitCount}íšŒ, " +
+            $"ì´íƒˆ ì‹œê°„ {summary.totalExitSeconds:F1}ì´ˆ, ì„±ê³µë¥  {summary.successRate:P0}"
         );
     }
 

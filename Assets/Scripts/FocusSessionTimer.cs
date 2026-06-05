@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class FocusSessionTimer : MonoBehaviour
 {
     [Header("References")]
-    public FocusSessionResultProcessor resultProcessor;
+    public FocusSessionService focusSessionService;
+    public GameStateManager gameStateManager;
     public AppFocusTracker appFocusTracker;
 
     [Header("UI")]
@@ -19,96 +20,86 @@ public class FocusSessionTimer : MonoBehaviour
     public Button cancelButton;
 
     [Header("Test Mode")]
-    [Tooltip("Å×½ºÆ® ÆíÀÇ¸¦ À§ÇØ ºó ¹çÀÌ ÀÖÀ¸¸é ¼¼¼Ç ¼º°ø Á÷Àü¿¡ ±âº» ÀÛ¹°À» ÀÚµ¿À¸·Î ½É½À´Ï´Ù.")]
+    [Tooltip("KBW ì”¬ì˜ í…ŒìŠ¤íŠ¸ ë²„íŠ¼ì€ ì‹¤ì œ ë¶„ ë‹¨ìœ„ ëŒ€ì‹  ì§§ì€ í…ŒìŠ¤íŠ¸ ì‹œê°„ìœ¼ë¡œ FocusSessionServiceë¥¼ ì‹¤í–‰í•©ë‹ˆë‹¤.")]
+    public bool useShortTestDuration = true;
+
+    [Tooltip("í…ŒìŠ¤íŠ¸ í¸ì˜ë¥¼ ìœ„í•´ ë¹ˆ ë°­ì´ ìˆìœ¼ë©´ ì„¸ì…˜ ì‹œì‘ ì „ì— ê¸°ë³¸ ì‘ë¬¼ì„ ìë™ìœ¼ë¡œ ì‹¬ìŠµë‹ˆë‹¤.")]
     public bool autoPlantEmptyPlotsForTest = true;
-
-    private bool isRunning;
-
-    private string currentGoalType;
-    private string currentGoalName;
-
-    private int currentPlannedMinutes;
-    private int currentRewardMinutes;
-
-    private float sessionDurationSeconds;
-    private float remainingSeconds;
-
-    private DateTime startedAt;
 
     private void Awake()
     {
-        if (resultProcessor == null)
-            resultProcessor = FindAnyObjectByType<FocusSessionResultProcessor>();
-
-        if (appFocusTracker == null)
-            appFocusTracker = FindAnyObjectByType<AppFocusTracker>();
-
+        RefreshReferences();
+        BindServiceEvents();
         SetSessionRunningUI(false);
         UpdateIdleUI();
         UpdateExitUI();
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        if (!isRunning)
+        UnbindServiceEvents();
+    }
+
+    private void RefreshReferences()
+    {
+        if (focusSessionService == null)
+            focusSessionService = FocusSessionService.Instance;
+
+        if (focusSessionService == null)
+            focusSessionService = FindAnyObjectByType<FocusSessionService>();
+
+        if (gameStateManager == null)
+            gameStateManager = GameStateManager.Instance;
+
+        if (gameStateManager == null)
+            gameStateManager = FindAnyObjectByType<GameStateManager>();
+
+        if (appFocusTracker == null)
+            appFocusTracker = FindAnyObjectByType<AppFocusTracker>();
+    }
+
+    private void BindServiceEvents()
+    {
+        if (focusSessionService == null)
             return;
 
-        remainingSeconds -= Time.deltaTime;
+        focusSessionService.OnSessionStarted -= HandleSessionStarted;
+        focusSessionService.OnSessionTick -= HandleSessionTick;
+        focusSessionService.OnSessionFinished -= HandleSessionFinished;
 
-        if (remainingSeconds <= 0f)
-        {
-            remainingSeconds = 0f;
-            UpdateTimerUI();
-            CompleteSession();
+        focusSessionService.OnSessionStarted += HandleSessionStarted;
+        focusSessionService.OnSessionTick += HandleSessionTick;
+        focusSessionService.OnSessionFinished += HandleSessionFinished;
+    }
+
+    private void UnbindServiceEvents()
+    {
+        if (focusSessionService == null)
             return;
-        }
 
-        UpdateTimerUI();
-        UpdateExitUI();
+        focusSessionService.OnSessionStarted -= HandleSessionStarted;
+        focusSessionService.OnSessionTick -= HandleSessionTick;
+        focusSessionService.OnSessionFinished -= HandleSessionFinished;
     }
 
     public void StartStudy10MinTest()
     {
-        StartTestSession(
-            goalType: "Study",
-            goalName: "°øºÎÇÏ±â",
-            plannedMinutes: 10,
-            rewardMinutes: 10,
-            testSeconds: 10f
-        );
+        StartTestSession("Study", "ê³µë¶€í•˜ê¸°", 10, 10, 10f);
     }
 
     public void StartStudy30MinTest()
     {
-        StartTestSession(
-            goalType: "Study",
-            goalName: "°øºÎÇÏ±â",
-            plannedMinutes: 30,
-            rewardMinutes: 30,
-            testSeconds: 10f
-        );
+        StartTestSession("Study", "ê³µë¶€í•˜ê¸°", 30, 30, 10f);
     }
 
     public void StartReading10MinTest()
     {
-        StartTestSession(
-            goalType: "Reading",
-            goalName: "µ¶¼­ÇÏ±â",
-            plannedMinutes: 10,
-            rewardMinutes: 10,
-            testSeconds: 10f
-        );
+        StartTestSession("Reading", "ë…ì„œí•˜ê¸°", 10, 10, 10f);
     }
 
     public void StartExercise10MinTest()
     {
-        StartTestSession(
-            goalType: "Exercise",
-            goalName: "¿îµ¿ÇÏ±â",
-            plannedMinutes: 10,
-            rewardMinutes: 10,
-            testSeconds: 10f
-        );
+        StartTestSession("Exercise", "ìš´ë™í•˜ê¸°", 10, 10, 10f);
     }
 
     public void StartTestSession(
@@ -119,139 +110,159 @@ public class FocusSessionTimer : MonoBehaviour
         float testSeconds
     )
     {
-        if (isRunning)
+        RefreshReferences();
+
+        if (focusSessionService == null)
         {
-            Debug.LogWarning("[FocusSessionTimer] ÀÌ¹Ì ¼¼¼ÇÀÌ ÁøÇà ÁßÀÔ´Ï´Ù.", this);
+            Debug.LogError("[FocusSessionTimer] FocusSessionServiceë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.", this);
             return;
         }
 
-        if (resultProcessor == null)
+        if (focusSessionService.IsRunning)
         {
-            Debug.LogError("[FocusSessionTimer] FocusSessionResultProcessor°¡ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusSessionTimer] ì´ë¯¸ ì§‘ì¤‘ ì„¸ì…˜ì´ ì§„í–‰ ì¤‘ì…ë‹ˆë‹¤.", this);
             return;
-        }
-
-        currentGoalType = goalType;
-        currentGoalName = goalName;
-        currentPlannedMinutes = plannedMinutes;
-        currentRewardMinutes = rewardMinutes;
-
-        sessionDurationSeconds = Mathf.Max(1f, testSeconds);
-        remainingSeconds = sessionDurationSeconds;
-
-        startedAt = DateTime.Now;
-        isRunning = true;
-
-        appFocusTracker?.ResetAndStartTracking();
-
-        SetSessionRunningUI(true);
-        UpdateTimerUI();
-        UpdateExitUI();
-
-        if (goalText != null)
-            goalText.text = $"¸ñÇ¥: {currentGoalName}";
-
-        if (statusText != null)
-            statusText.text = "ÁıÁß ¼¼¼Ç ÁøÇà ÁßÀÔ´Ï´Ù. ½º¸¶Æ®ÆùÀ» »ç¿ëÇÏÁö ¾Ê°í ±â´Ù·Á ÁÖ¼¼¿ä.";
-
-        Debug.Log($"[FocusSessionTimer] ¼¼¼Ç ½ÃÀÛ: {currentGoalName}, º¸»ó ±âÁØ {currentRewardMinutes}ºĞ");
-    }
-
-    public void CancelSession()
-    {
-        if (!isRunning)
-            return;
-
-        float progressRatio = 1f - (remainingSeconds / sessionDurationSeconds);
-        int focusedMinutes = Mathf.FloorToInt(currentRewardMinutes * progressRatio);
-
-        int exitCount = 0;
-        float totalExitSeconds = 0f;
-
-        if (appFocusTracker != null)
-        {
-            appFocusTracker.StopTracking();
-            exitCount = appFocusTracker.GetExitCount();
-            totalExitSeconds = appFocusTracker.GetTotalExitSeconds();
-        }
-
-        FocusSessionResult result = new FocusSessionResult
-        {
-            goalType = currentGoalType,
-            goalName = currentGoalName,
-            plannedMinutes = currentPlannedMinutes,
-            focusedMinutes = focusedMinutes,
-            success = false,
-            exitCount = exitCount,
-            totalExitSeconds = totalExitSeconds,
-            startedAt = startedAt,
-            endedAt = DateTime.Now
-        };
-
-        isRunning = false;
-        SetSessionRunningUI(false);
-        UpdateExitUI();
-
-        resultProcessor.ApplySessionResult(result);
-
-        if (statusText != null)
-            statusText.text = "¼¼¼ÇÀ» Áß´ÜÇß½À´Ï´Ù. º¸»óÀº Áö±ŞµÇÁö ¾Ê½À´Ï´Ù.";
-
-        Debug.Log("[FocusSessionTimer] ¼¼¼Ç Áß´Ü");
-    }
-
-    private void CompleteSession()
-    {
-        if (!isRunning)
-            return;
-
-        isRunning = false;
-
-        int exitCount = 0;
-        float totalExitSeconds = 0f;
-
-        if (appFocusTracker != null)
-        {
-            appFocusTracker.StopTracking();
-            exitCount = appFocusTracker.GetExitCount();
-            totalExitSeconds = appFocusTracker.GetTotalExitSeconds();
         }
 
         if (autoPlantEmptyPlotsForTest)
             PlantDefaultCropToEmptyPlotsForTest();
 
-        FocusSessionResult result = new FocusSessionResult
-        {
-            goalType = currentGoalType,
-            goalName = currentGoalName,
-            plannedMinutes = currentPlannedMinutes,
-            focusedMinutes = currentRewardMinutes,
-            success = true,
-            exitCount = exitCount,
-            totalExitSeconds = totalExitSeconds,
-            startedAt = startedAt,
-            endedAt = DateTime.Now
-        };
+        FocusSessionConfig config = FocusSessionConfig.Create(
+            goalType,
+            goalName,
+            plannedMinutes,
+            rewardMinutes,
+            useShortTestDuration,
+            useShortTestDuration ? testSeconds : 0f
+        );
 
-        resultProcessor.ApplySessionResult(result);
+        gameStateManager?.SetSelectedSession(config);
+        focusSessionService.autoMoveSceneOnFinish = false;
+        focusSessionService.StartSession(config);
+    }
 
+    public void CancelSession()
+    {
+        RefreshReferences();
+
+        if (focusSessionService == null || !focusSessionService.IsRunning)
+            return;
+
+        focusSessionService.CancelSession();
+    }
+
+    private void HandleSessionStarted(FocusSessionRuntimeData runtimeData)
+    {
+        SetSessionRunningUI(true);
+        UpdateRuntimeUI(runtimeData);
+
+        string goalName = runtimeData != null && runtimeData.config != null
+            ? runtimeData.config.goalName
+            : "ì„ íƒí•œ ëª©í‘œ";
+
+        if (statusText != null)
+            statusText.text = "ì§‘ì¤‘ ì„¸ì…˜ì´ ì§„í–‰ ì¤‘ì…ë‹ˆë‹¤. ìŠ¤ë§ˆíŠ¸í°ì„ ë‚´ë ¤ë†“ê³  ê¸°ë‹¤ë ¤ ì£¼ì„¸ìš”.";
+
+        Debug.Log($"[FocusSessionTimer] ì§‘ì¤‘ ì„¸ì…˜ ì‹œì‘: {goalName}");
+    }
+
+    private void HandleSessionTick(FocusSessionRuntimeData runtimeData)
+    {
+        UpdateRuntimeUI(runtimeData);
+    }
+
+    private void HandleSessionFinished(FocusSessionResult result, RewardResultData reward)
+    {
         SetSessionRunningUI(false);
         UpdateExitUI();
 
-        if (statusText != null)
+        if (reward != null && reward.finalSuccess)
         {
-            if (totalExitSeconds >= 180f)
-                statusText.text = "¼¼¼Ç ½ÇÆĞ: ¾ÛÀ» ³Ê¹« ¿À·¡ ÀÌÅ»Çß½À´Ï´Ù.";
-            else if (totalExitSeconds > 30f)
-                statusText.text = $"¼º°øÇßÁö¸¸ ÀÌÅ» ½Ã°£ÀÌ ÀÖ¾î º¸»óÀÌ °¨¼ÒÇß½À´Ï´Ù. ÀÌÅ» ½Ã°£: {totalExitSeconds:F1}ÃÊ";
-            else
-                statusText.text = $"¼º°ø! {currentRewardMinutes}ºĞ ÁıÁß º¸»óÀÌ ³óÀå¿¡ Àû¿ëµÇ¾ú½À´Ï´Ù.";
+            if (statusText != null)
+            {
+                statusText.text =
+                    $"ì„±ê³µ! ì„±ì¥ +{reward.rewardGrowth}, í•´ê¸ˆ +{reward.rewardUnlockProgress}, " +
+                    $"ìŠ¤íƒœë¯¸ë„ˆ +{reward.rewardStamina}";
+            }
+        }
+        else
+        {
+            string reason = reward == null || string.IsNullOrWhiteSpace(reward.failReasonMessage)
+                ? "ì„¸ì…˜ì´ ì¤‘ë‹¨ë˜ì—ˆìŠµë‹ˆë‹¤. ë³´ìƒì€ ì§€ê¸‰ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤."
+                : reward.failReasonMessage;
+
+            if (statusText != null)
+                statusText.text = reason;
         }
 
         Debug.Log(
-            $"[FocusSessionTimer] ¼¼¼Ç ¿Ï·á: {currentGoalName}, ÁıÁß {currentRewardMinutes}ºĞ, " +
-            $"ÀÌÅ» È½¼ö {exitCount}, ÀÌÅ» ½Ã°£ {totalExitSeconds:F1}ÃÊ"
+            $"[FocusSessionTimer] ì§‘ì¤‘ ì„¸ì…˜ ì¢…ë£Œ: {result?.goalName}, " +
+            $"ì„±ê³µ {reward != null && reward.finalSuccess}, ì§‘ì¤‘ {result?.focusedMinutes ?? 0}ë¶„"
         );
+    }
+
+    private void UpdateRuntimeUI(FocusSessionRuntimeData runtimeData)
+    {
+        if (runtimeData == null)
+            return;
+
+        if (goalText != null)
+        {
+            string goalName = runtimeData.config == null ? "ì„ íƒí•œ ëª©í‘œ" : runtimeData.config.goalName;
+            goalText.text = $"ëª©í‘œ: {goalName}";
+        }
+
+        if (timerText != null)
+            timerText.text = GameDataUtility.ToMinuteSecondText(runtimeData.remainingSeconds);
+
+        UpdateExitUI();
+    }
+
+    private void UpdateExitUI()
+    {
+        if (exitText == null)
+            return;
+
+        RefreshReferences();
+
+        if (focusSessionService != null)
+        {
+            exitText.text = focusSessionService.GetExitInfoText();
+            return;
+        }
+
+        if (appFocusTracker == null)
+        {
+            exitText.text = "ì´íƒˆ: ì¶”ì  ì—†ìŒ";
+            return;
+        }
+
+        exitText.text =
+            $"ì´íƒˆ: {appFocusTracker.GetExitCount()}íšŒ / {appFocusTracker.GetTotalExitSeconds():F1}ì´ˆ";
+    }
+
+    private void UpdateIdleUI()
+    {
+        if (goalText != null)
+            goalText.text = "ëª©í‘œ: ì„ íƒ ì—†ìŒ";
+
+        if (timerText != null)
+            timerText.text = "00:00";
+
+        if (statusText != null)
+            statusText.text = "í…ŒìŠ¤íŠ¸í•  ì§‘ì¤‘ ëª©í‘œë¥¼ ì„ íƒí•˜ì„¸ìš”.";
+    }
+
+    private void SetSessionRunningUI(bool running)
+    {
+        foreach (Button button in startButtons)
+        {
+            if (button != null)
+                button.interactable = !running;
+        }
+
+        if (cancelButton != null)
+            cancelButton.interactable = running;
     }
 
     private void PlantDefaultCropToEmptyPlotsForTest()
@@ -266,56 +277,5 @@ public class FocusSessionTimer : MonoBehaviour
             if (plot != null && plot.IsEmpty)
                 plot.Plant(farm.defaultCrop);
         }
-    }
-
-    private void UpdateTimerUI()
-    {
-        if (timerText == null)
-            return;
-
-        int seconds = Mathf.CeilToInt(remainingSeconds);
-        int minutesPart = seconds / 60;
-        int secondsPart = seconds % 60;
-
-        timerText.text = $"{minutesPart:00}:{secondsPart:00}";
-    }
-
-    private void UpdateExitUI()
-    {
-        if (exitText == null)
-            return;
-
-        if (appFocusTracker == null)
-        {
-            exitText.text = "ÀÌÅ»: ÃßÀû±â ¾øÀ½";
-            return;
-        }
-
-        exitText.text =
-            $"ÀÌÅ»: {appFocusTracker.GetExitCount()}È¸ / {appFocusTracker.GetTotalExitSeconds():F1}ÃÊ";
-    }
-
-    private void UpdateIdleUI()
-    {
-        if (goalText != null)
-            goalText.text = "¸ñÇ¥: ¾øÀ½";
-
-        if (timerText != null)
-            timerText.text = "00:00";
-
-        if (statusText != null)
-            statusText.text = "Å×½ºÆ®ÇÒ ÁıÁß ¼¼¼ÇÀ» ¼±ÅÃÇÏ¼¼¿ä.";
-    }
-
-    private void SetSessionRunningUI(bool running)
-    {
-        foreach (Button button in startButtons)
-        {
-            if (button != null)
-                button.interactable = !running;
-        }
-
-        if (cancelButton != null)
-            cancelButton.interactable = running;
     }
 }

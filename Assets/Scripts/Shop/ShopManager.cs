@@ -6,7 +6,7 @@ namespace FarmerGetToWork
 {
     /// <summary>
     /// ShopScene의 카드 선택, 구매, 배치 버튼을 연결합니다.
-    /// 지금은 UI 흐름만 만들고 실제 배치 데이터 저장은 Debug.Log로 남깁니다.
+    /// 구매는 KBW 메인 런타임의 FarmManager 골드를 먼저 사용하고, 실제 배치 데이터 저장은 아직 Debug.Log로 남깁니다.
     /// </summary>
     public class ShopManager : MonoBehaviour
     {
@@ -60,13 +60,13 @@ namespace FarmerGetToWork
                 return;
             }
 
-            if (!GameData.TrySpendGold(selectedItem.Price))
+            if (!RuntimeGameDataAdapter.TrySpendGold(selectedItem.Price))
             {
                 Debug.Log($"골드 부족: {selectedItem.ItemName} 구매 실패");
                 return;
             }
 
-            Debug.Log($"{selectedItem.ItemName} 구매 완료. 남은 골드: {GameData.gold:N0}");
+            Debug.Log($"{selectedItem.ItemName} 구매 완료. 남은 골드: {RuntimeGameDataAdapter.GetGold():N0}");
         }
 
         public void PlaceSelectedItem()

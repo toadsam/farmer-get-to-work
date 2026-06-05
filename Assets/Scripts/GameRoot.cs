@@ -43,7 +43,7 @@ public class GameRoot : MonoBehaviour
         SaveSystem = EnsureComponent<SaveSystem>();
         FocusMusic = EnsureComponent<FocusMusicPlayer>();
 
-        Debug.Log("[GameRoot] »ı¼º ¿Ï·á");
+        Debug.Log("[GameRoot] ìƒì„± ì™„ë£Œ");
     }
 
     private T EnsureComponent<T>() where T : Component

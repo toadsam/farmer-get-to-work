@@ -15,7 +15,8 @@ namespace FarmerGetToWork
     {
         public const string TitleScene = "00_TitleScene";
         public const string TutorialScene = "01_TutorialScene";
-        public const string HomeScene = "02_HomeScene";
+        public const string HomeScene = RuntimeGameDataAdapter.MainFarmSceneName;
+        public const string PrototypeHomeScene = "02_HomeScene";
         public const string GoalScene = "03_GoalScene";
         public const string FocusScene = "04_FocusScene";
         public const string SuccessScene = "05_SuccessScene";
@@ -32,7 +33,7 @@ namespace FarmerGetToWork
                 return;
             }
 
-            SceneManager.LoadScene(sceneName);
+            RuntimeGameDataAdapter.LoadScene(sceneName);
         }
 
         public void LoadTitleScene()

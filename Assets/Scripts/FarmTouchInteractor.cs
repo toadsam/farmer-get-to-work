@@ -134,7 +134,7 @@ public class FarmTouchInteractor : MonoBehaviour
     {
         if (mainCamera == null)
         {
-            Debug.LogError("[FarmTouchInteractor] Main Camera°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogError("[FarmTouchInteractor] Main Cameraê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -151,14 +151,14 @@ public class FarmTouchInteractor : MonoBehaviour
             return;
         }
 
-        ShowMessage("»óÈ£ÀÛ¿ëÇÒ ¼ö ¾ø´Â ¿ÀºêÁ§Æ®ÀÔ´Ï´Ù.");
+        ShowMessage("ìƒí˜¸ì‘ìš©í•  ìˆ˜ ì—†ëŠ” ì˜¤ë¸Œì íŠ¸ì…ë‹ˆë‹¤.");
     }
 
     private void HandleCropPlot(CropPlot plot)
     {
         if (FarmManager.Instance == null)
         {
-            Debug.LogError("[FarmTouchInteractor] FarmManager.Instance°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogError("[FarmTouchInteractor] FarmManager.Instanceê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
@@ -177,7 +177,7 @@ public class FarmTouchInteractor : MonoBehaviour
             bool planted = farm.PlantToPlot(plot, cropToPlant);
 
             if (planted)
-                ShowMessage($"{cropToPlant.displayName}À»(¸¦) ½É¾ú½À´Ï´Ù.");
+                ShowMessage($"{cropToPlant.displayName}ì„(ë¥¼) ì‹¬ì—ˆìŠµë‹ˆë‹¤.");
 
             return;
         }
@@ -195,15 +195,15 @@ public class FarmTouchInteractor : MonoBehaviour
             int earnedGold = farm.gold - beforeGold;
 
             if (harvested)
-                ShowMessage($"¼öÈ® ¿Ï·á! Gold +{earnedGold}");
+                ShowMessage($"ìˆ˜í™• ì™„ë£Œ! Gold +{earnedGold}");
 
             return;
         }
 
         if (plot.currentCrop != null)
-            ShowMessage($"¾ÆÁ÷ ¼ºÀå ÁßÀÔ´Ï´Ù. ¼ºÀåµµ: {plot.growthPoints}/{plot.currentCrop.requiredGrowthPoints}");
+            ShowMessage($"ì•„ì§ ì„±ì¥ ì¤‘ì…ë‹ˆë‹¤. ì„±ì¥ë„: {plot.growthPoints}/{plot.currentCrop.requiredGrowthPoints}");
         else
-            ShowMessage("¾ÆÁ÷ ¼ºÀå ÁßÀÔ´Ï´Ù.");
+            ShowMessage("ì•„ì§ ì„±ì¥ ì¤‘ì…ë‹ˆë‹¤.");
     }
 
     private bool IsPointerOverUI()

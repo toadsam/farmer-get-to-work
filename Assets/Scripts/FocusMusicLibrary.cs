@@ -25,12 +25,12 @@ public class FocusMusicLibrary : MonoBehaviour
 
         if (player == null)
         {
-            Debug.LogWarning("[FocusMusicLibrary] FocusMusicPlayer°¡ ¾ø½À´Ï´Ù.", this);
+            Debug.LogWarning("[FocusMusicLibrary] FocusMusicPlayerê°€ ì—†ìŠµë‹ˆë‹¤.", this);
             return;
         }
 
         player.RegisterTracks(tracks);
 
-        Debug.Log($"[FocusMusicLibrary] À½¾Ç ¶óÀÌºê·¯¸® µî·Ï ¿Ï·á / {tracks.Count}°³");
+        Debug.Log($"[FocusMusicLibrary] ìŒì•… ë¼ì´ë¸ŒëŸ¬ë¦¬ ë“±ë¡ ì™„ë£Œ / {tracks.Count}ê°œ");
     }
 }
