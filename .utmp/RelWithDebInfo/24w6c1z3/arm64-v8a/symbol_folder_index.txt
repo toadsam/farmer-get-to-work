@@ -1,0 +1,1 @@
+C:\Users\kbw\Documents\GitHub\farmer-get-to-work\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\24w6c1z3\obj\arm64-v8a

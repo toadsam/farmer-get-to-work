@@ -1,0 +1,5 @@
+C:/GithubTemp/farmer-get-to-work/.utmp/RelWithDebInfo/4v2i1f45/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/GithubTemp/farmer-get-to-work/.utmp/RelWithDebInfo/4v2i1f45/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/GithubTemp/farmer-get-to-work/.utmp/RelWithDebInfo/4v2i1f45/arm64-v8a/GameActivity/CMakeFiles/game.dir
+C:/GithubTemp/farmer-get-to-work/.utmp/RelWithDebInfo/4v2i1f45/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+C:/GithubTemp/farmer-get-to-work/.utmp/RelWithDebInfo/4v2i1f45/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

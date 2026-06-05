@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d657cc3fae8e0034684ca2cb7a729d07, type: 3}
+  m_Name: Corn
+  m_EditorClassIdentifier: Assembly-CSharp::CropDefinition
+  cropId: corn
+  displayName: Corn
+  requiredGrowthPoints: 100
+  sellGold: 30
+  seedPrefab: {fileID: 8827380904811267767, guid: 562bb0bccabd980438171678a3e0049e, type: 3}
+  growingPrefab: {fileID: 4560312203326484719, guid: a4019d5671f0df04297a7166a697418a, type: 3}
+  readyPrefab: {fileID: 7159864487012486972, guid: c6d749f96d14110408c6c077eb43b6fe, type: 3}
