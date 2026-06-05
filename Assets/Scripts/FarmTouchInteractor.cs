@@ -166,36 +166,37 @@ public class FarmTouchInteractor : MonoBehaviour
 
         if (plot.IsEmpty)
         {
-            if (farm.defaultCrop == null)
+            CropDefinition cropToPlant = plot.GetPlantCrop(farm.defaultCrop);
+
+            if (!farm.CanPlantToPlot(plot, cropToPlant, out string reason))
             {
-                ShowMessage("기본 작물이 설정되어 있지 않습니다.");
+                ShowMessage(reason);
                 return;
             }
 
-            if (farm.stamina < 1)
-            {
-                ShowMessage("스태미너가 부족합니다. 집중 세션을 완료하면 다시 관리할 수 있어요.");
-                return;
-            }
+            bool planted = farm.PlantToPlot(plot, cropToPlant);
 
-            farm.PlantToPlot(plot, farm.defaultCrop);
-            ShowMessage($"{farm.defaultCrop.displayName}을(를) 심었습니다.");
+            if (planted)
+                ShowMessage($"{cropToPlant.displayName}을(를) 심었습니다.");
+
             return;
         }
 
         if (plot.IsReady)
         {
-            if (farm.stamina < 1)
+            if (!farm.CanHarvestPlot(plot, out string reason))
             {
-                ShowMessage("스태미너가 부족해서 수확할 수 없습니다.");
+                ShowMessage(reason);
                 return;
             }
 
             int beforeGold = farm.gold;
-            farm.HarvestPlot(plot);
+            bool harvested = farm.HarvestPlot(plot);
             int earnedGold = farm.gold - beforeGold;
 
-            ShowMessage($"수확 완료! Gold +{earnedGold}");
+            if (harvested)
+                ShowMessage($"수확 완료! Gold +{earnedGold}");
+
             return;
         }
 

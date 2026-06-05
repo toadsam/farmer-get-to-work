@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,17 @@ public class CropPlot : MonoBehaviour
     [Header("Reward")]
     [Tooltip("체크하면 밭 안의 작물 슬롯 수만큼 보상을 지급합니다.")]
     public bool rewardBySlotCount = true;
+
+    [Header("Planting")]
+    public CropDefinition defaultCropOverride;
+
+    public CropDefinition GetPlantCrop(CropDefinition fallbackCrop)
+    {
+        if (defaultCropOverride != null)
+            return defaultCropOverride;
+
+        return fallbackCrop;
+    }
 
     private readonly List<GameObject> currentVisuals = new List<GameObject>();
 
@@ -100,6 +112,59 @@ public class CropPlot : MonoBehaviour
         ClearVisuals();
 
         return reward;
+    }
+
+    public CropPlotStateData CaptureStateData()
+    {
+        return new CropPlotStateData
+        {
+            plotId = plotId,
+            cropId = currentCrop != null ? currentCrop.cropId : "",
+            state = state.ToString(),
+            growthPoints = growthPoints
+        };
+    }
+
+    public void ApplyStateData(CropPlotStateData data, CropDefinition cropDefinition)
+    {
+        if (data == null)
+        {
+            ClearPlot();
+            return;
+        }
+
+        if (!Enum.TryParse(data.state, out CropPlotState loadedState))
+            loadedState = CropPlotState.Empty;
+
+        if (loadedState == CropPlotState.Empty || cropDefinition == null)
+        {
+            ClearPlot();
+            return;
+        }
+
+        currentCrop = cropDefinition;
+        state = loadedState;
+        growthPoints = Mathf.Max(0, data.growthPoints);
+
+        if (currentCrop != null)
+        {
+            int required = Mathf.Max(1, currentCrop.requiredGrowthPoints);
+            growthPoints = Mathf.Clamp(growthPoints, 0, required);
+
+            if (growthPoints >= required)
+                state = CropPlotState.Ready;
+        }
+
+        RefreshVisuals();
+    }
+
+    public void ClearPlot()
+    {
+        currentCrop = null;
+        growthPoints = 0;
+        state = CropPlotState.Empty;
+
+        ClearVisuals();
     }
 
     private void RefreshVisuals()

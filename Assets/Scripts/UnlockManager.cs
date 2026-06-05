@@ -86,6 +86,46 @@ public class UnlockManager : MonoBehaviour
         }
     }
 
+    public void SetProgress(int progress, bool recalculateUnlocks = true)
+    {
+        totalProgress = Mathf.Max(0, progress);
+
+        if (recalculateUnlocks)
+            RecalculateUnlocksFromProgress();
+
+        ApplyAllVisualStates();
+
+        Debug.Log($"[UnlockManager] 진행도 불러오기 완료 / {totalProgress}");
+    }
+
+    public void RecalculateUnlocksFromProgress()
+    {
+        foreach (UnlockEntry entry in unlockEntries)
+        {
+            if (entry == null)
+                continue;
+
+            entry.unlocked = totalProgress >= entry.requiredProgress;
+        }
+    }
+
+    public void ResetProgressForNewGame()
+    {
+        totalProgress = 0;
+
+        foreach (UnlockEntry entry in unlockEntries)
+        {
+            if (entry == null)
+                continue;
+
+            entry.unlocked = false;
+        }
+
+        ApplyAllVisualStates();
+
+        Debug.Log("[UnlockManager] 해금 진행도 초기화 완료");
+    }
+
     [ContextMenu("Test Add Progress +20")]
     public void TestAddProgress20()
     {

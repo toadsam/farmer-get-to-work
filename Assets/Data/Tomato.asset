@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d657cc3fae8e0034684ca2cb7a729d07, type: 3}
+  m_Name: Tomato
+  m_EditorClassIdentifier: Assembly-CSharp::CropDefinition
+  cropId: tomato
+  displayName: Tomato
+  requiredGrowthPoints: 100
+  sellGold: 20
+  seedPrefab: {fileID: 8192837806035944095, guid: e2e211ec5c4a15c4fb4ec58ec7261142, type: 3}
+  growingPrefab: {fileID: 6062987839148597517, guid: 00d058d725d2d364582efe6ecee1e299, type: 3}
+  readyPrefab: {fileID: 7408692456147057280, guid: 85282b096886479418ea95b84ec0ecb6, type: 3}
