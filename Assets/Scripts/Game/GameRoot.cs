@@ -11,7 +11,9 @@ public class GameRoot : MonoBehaviour
     public RewardProcessor RewardProcessor { get; private set; }
     public SessionRecordManager SessionRecord { get; private set; }
     public SaveSystem SaveSystem { get; private set; }
+    public GameAudioSettingsManager AudioSettings { get; private set; }
     public FocusMusicPlayer FocusMusic { get; private set; }
+
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Bootstrap()
@@ -41,6 +43,7 @@ public class GameRoot : MonoBehaviour
         RewardProcessor = EnsureComponent<RewardProcessor>();
         SessionRecord = EnsureComponent<SessionRecordManager>();
         SaveSystem = EnsureComponent<SaveSystem>();
+        AudioSettings = EnsureComponent<GameAudioSettingsManager>();
         FocusMusic = EnsureComponent<FocusMusicPlayer>();
 
         Debug.Log("[GameRoot] 생성 완료");

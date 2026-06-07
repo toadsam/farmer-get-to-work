@@ -382,6 +382,16 @@ public class SaveSystem : MonoBehaviour
 
         currentSaveData = GameSaveData.CreateNew();
 
+        GameStateManager gameState = GameStateManager.Instance;
+        if (gameState == null)
+            gameState = FindAnyObjectByType<GameStateManager>();
+
+        if (gameState != null)
+        {
+            gameState.ClearSelectedSession();
+            gameState.ClearLastSessionResult();
+        }
+
         FarmManager farmManager = GetFarmManager();
         UnlockManager unlockManager = GetUnlockManager();
 

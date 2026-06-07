@@ -18,6 +18,9 @@ public class SceneFlowManager : MonoBehaviour
     public string collectionSceneName = "08_CollectionScene";
     public string recordSceneName = "09_RecordScene";
 
+    [Header("Save")]
+    public bool saveBeforeSceneChange = true;
+
     public bool IsLoading { get; private set; }
 
     private void Awake()
@@ -104,6 +107,11 @@ public class SceneFlowManager : MonoBehaviour
                 $"[SceneFlow] '{sceneName}' 씬을 불러올 수 없습니다. Build Settings 또는 Build Profile의 Scene 목록에 추가되어 있는지 확인하세요."
             );
             return;
+        }
+
+        if (saveBeforeSceneChange && SaveSystem.Instance != null)
+        {
+            SaveSystem.Instance.SaveGame();
         }
 
         StartCoroutine(LoadSceneRoutine(sceneName));

@@ -75,6 +75,9 @@ public class FocusMusicPlayer : MonoBehaviour
         BindFocusSessionService();
         RefreshUnlockedTracksFromCurrentProgress();
 
+        if (GameAudioSettingsManager.Instance != null)
+            SetVolume(GameAudioSettingsManager.Instance.MusicVolume);
+
         // GoalScene에서 세션이 먼저 시작되고 FocusScene에서 음악 라이브러리가 나중에 등록되는 경우 대비
         TryPlayIfSessionRunning();
     }

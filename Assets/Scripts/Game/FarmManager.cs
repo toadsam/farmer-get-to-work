@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,6 +27,29 @@ public class FarmManager : MonoBehaviour
 
     [Tooltip("저장된 cropId로 작물을 다시 찾기 위한 목록입니다. 기본 작물도 넣어두는 것을 권장합니다.")]
     public List<CropDefinition> availableCrops = new List<CropDefinition>();
+
+    public event Action OnResourcesChanged;
+    public event Action<int> OnGoldChanged;
+    public event Action<int, int> OnStaminaChanged;
+
+    [Header("Auto Save")]
+    public bool autoSaveAfterFarmAction = true;
+
+    private void NotifyResourcesChanged()
+    {
+        OnGoldChanged?.Invoke(gold);
+        OnStaminaChanged?.Invoke(stamina, maxStamina);
+        OnResourcesChanged?.Invoke();
+    }
+
+    private void SaveAfterFarmAction()
+    {
+        if (!autoSaveAfterFarmAction)
+            return;
+
+        if (SaveSystem.Instance != null)
+            SaveSystem.Instance.SaveGame();
+    }
 
     private void Awake()
     {
@@ -59,6 +83,8 @@ public class FarmManager : MonoBehaviour
 
         stamina -= amount;
 
+        NotifyResourcesChanged();
+
         Debug.Log($"[FarmManager] Stamina -{amount} / 현재 {stamina}/{maxStamina}");
         return true;
     }
@@ -70,6 +96,8 @@ public class FarmManager : MonoBehaviour
 
         stamina = Mathf.Clamp(stamina + amount, 0, maxStamina);
 
+        NotifyResourcesChanged();
+
         Debug.Log($"[FarmManager] Stamina +{amount} / 현재 {stamina}/{maxStamina}");
     }
 
@@ -77,12 +105,20 @@ public class FarmManager : MonoBehaviour
     {
         stamina = maxStamina;
 
+        NotifyResourcesChanged();
+
         Debug.Log($"[FarmManager] 스태미너 회복 완료 / {stamina}/{maxStamina}");
     }
 
     public void AddGold(int amount)
     {
-        gold += amount;
+        if (amount == 0)
+            return;
+
+        gold = Mathf.Max(0, gold + amount);
+
+        NotifyResourcesChanged();
+
         Debug.Log($"[FarmManager] Gold: {gold}");
     }
 
@@ -129,6 +165,9 @@ public class FarmManager : MonoBehaviour
 
         plot.Plant(crop);
 
+        NotifyResourcesChanged();
+        SaveAfterFarmAction();
+
         Debug.Log($"[FarmManager] 작물 심기 완료: {crop.displayName}");
         return true;
     }
@@ -173,6 +212,8 @@ public class FarmManager : MonoBehaviour
         if (earnedGold > 0)
             AddGold(earnedGold);
 
+        SaveAfterFarmAction();
+
         Debug.Log($"[FarmManager] 수확 완료 / Gold +{earnedGold}");
         return true;
     }
@@ -190,6 +231,8 @@ public class FarmManager : MonoBehaviour
         gold = Mathf.Max(0, loadedGold);
         maxStamina = Mathf.Max(1, loadedMaxStamina);
         stamina = Mathf.Clamp(loadedStamina, 0, maxStamina);
+
+        NotifyResourcesChanged();
 
         Debug.Log($"[FarmManager] 리소스 불러오기 / Gold {gold}, Stamina {stamina}/{maxStamina}");
     }
@@ -288,6 +331,9 @@ public class FarmManager : MonoBehaviour
         }
 
         gold -= amount;
+
+        NotifyResourcesChanged();
+        SaveAfterFarmAction();
 
         Debug.Log($"[FarmManager] Gold -{amount} / 현재 Gold {gold}");
         return true;

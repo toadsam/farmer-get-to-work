@@ -12,6 +12,10 @@ public class RewardProcessor : MonoBehaviour
     public IslandSetManager islandSetManager;
     public FocusMusicPlayer focusMusicPlayer;
 
+    [Header("Unlock Preview Database")]
+    public UnlockPreviewDatabase unlockPreviewDatabase;
+    public string unlockPreviewDatabaseResourcePath = "UnlockPreviewDatabase";
+
     [Header("Reward Rules")]
     [Tooltip("이 시간 미만의 세션은 보상을 지급하지 않습니다.")]
     public int minRewardMinutes = 10;
@@ -52,6 +56,9 @@ public class RewardProcessor : MonoBehaviour
     [Tooltip("성공 세션 1회당 회복할 스태미너입니다.")]
     public int staminaRewardOnSuccess = 2;
 
+    [Header("Unlock Preview For Result UI")]
+    public List<UnlockPreviewEntry> unlockPreviewEntries = new List<UnlockPreviewEntry>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -63,6 +70,7 @@ public class RewardProcessor : MonoBehaviour
         Instance = this;
 
         RefreshReferences();
+        LoadUnlockPreviewDatabaseIfNeeded();
     }
 
     private void RefreshReferences()
@@ -155,7 +163,7 @@ public class RewardProcessor : MonoBehaviour
 
         int staminaReward = applyStaminaReward ? staminaRewardOnSuccess : 0;
 
-        return RewardResultData.CreateSuccess(
+        RewardResultData reward = RewardResultData.CreateSuccess(
             focusedMinutes: result.focusedMinutes,
             rewardGrowth: growth,
             rewardUnlockProgress: unlockProgress,
@@ -164,6 +172,62 @@ public class RewardProcessor : MonoBehaviour
             rewardMultiplier: multiplier,
             rewardStamina: staminaReward
         );
+
+        FillUnlockPreview(reward);
+
+        return reward;
+    }
+
+    private void FillUnlockPreview(RewardResultData reward)
+    {
+        if (reward == null)
+            return;
+
+        if (!reward.finalSuccess)
+            return;
+
+        if (reward.rewardUnlockProgress <= 0)
+            return;
+
+        LoadUnlockPreviewDatabaseIfNeeded();
+
+        if (unlockPreviewDatabase == null)
+            return;
+
+        int beforeProgress = GetCurrentUnlockProgressForPreview();
+        int afterProgress = beforeProgress + reward.rewardUnlockProgress;
+
+        UnlockPreviewEntry newlyUnlocked =
+            unlockPreviewDatabase.FindNewlyUnlockedEntry(beforeProgress, afterProgress);
+
+        if (newlyUnlocked == null)
+            return;
+
+        reward.unlockedSomething = true;
+        reward.unlockedId = newlyUnlocked.unlockId;
+        reward.unlockedDisplayName = newlyUnlocked.displayName;
+
+        Debug.Log(
+            $"[RewardProcessor] 해금 미리보기: {newlyUnlocked.displayName} " +
+            $"({beforeProgress} → {afterProgress})"
+        );
+    }
+
+    private int GetCurrentUnlockProgressForPreview()
+    {
+        if (unlockManager == null)
+            unlockManager = UnlockManager.Instance;
+
+        if (unlockManager != null)
+            return unlockManager.totalProgress;
+
+        if (SaveSystem.Instance != null &&
+            SaveSystem.Instance.currentSaveData != null)
+        {
+            return SaveSystem.Instance.currentSaveData.totalUnlockProgress;
+        }
+
+        return 0;
     }
 
     private int CalculateAmount(int focusedMinutes, int amountPerMinute, float multiplier)
@@ -237,11 +301,16 @@ public class RewardProcessor : MonoBehaviour
 
                 if (newlyUnlockedIslands != null && newlyUnlockedIslands.Count > 0)
                 {
-                    IslandSetController unlockedIsland = newlyUnlockedIslands[0];
+                    foreach (IslandSetController unlockedIsland in newlyUnlockedIslands)
+                    {
+                        if (unlockedIsland == null)
+                            continue;
 
-                    reward.unlockedSomething = true;
-                    reward.unlockedId = unlockedIsland.islandId;
-                    reward.unlockedDisplayName = unlockedIsland.displayName;
+                        reward.AddUnlockedElement(
+                            unlockedIsland.islandId,
+                            unlockedIsland.displayName
+                        );
+                    }
                 }
                 else if (nextBeforeUnlock != null && nextBeforeUnlock.unlocked)
                 {
@@ -279,6 +348,8 @@ public class RewardProcessor : MonoBehaviour
                 Debug.LogWarning("[RewardProcessor] FarmManager가 없어 스태미너 보상을 적용하지 못했습니다.", this);
             }
         }
+
+        reward.appliedToWorldState = farmManager != null || unlockManager != null || islandSetManager != null;
     }
 
     private void LogRewardResult(FocusSessionResult result, RewardResultData reward)
@@ -310,6 +381,150 @@ public class RewardProcessor : MonoBehaviour
             );
         }
     }
+
+    public bool TryApplyLastRewardToCurrentWorld()
+    {
+        RefreshReferences();
+
+        if (gameStateManager == null)
+            gameStateManager = FindAnyObjectByType<GameStateManager>();
+
+        if (gameStateManager == null)
+        {
+            Debug.LogWarning("[RewardProcessor] GameStateManager가 없어 마지막 보상을 적용할 수 없습니다.", this);
+            return false;
+        }
+
+        FocusSessionResult result = gameStateManager.lastSessionResult;
+        RewardResultData reward = gameStateManager.lastRewardResult;
+
+        if (result == null || reward == null)
+            return false;
+
+        if (!reward.finalSuccess)
+            return false;
+
+        if (reward.appliedToWorldState)
+            return false;
+
+        bool applied = ApplyRewardToAvailableWorld(result, reward);
+
+        if (applied)
+        {
+            reward.appliedToWorldState = true;
+            gameStateManager.SaveLastSessionResult(result, reward);
+
+            if (SaveSystem.Instance != null)
+                SaveSystem.Instance.SaveGame();
+
+            Debug.Log("[RewardProcessor] 대기 중이던 세션 보상을 현재 농장에 적용했습니다.");
+        }
+
+        return applied;
+    }
+
+    private bool ApplyRewardToAvailableWorld(FocusSessionResult result, RewardResultData reward)
+    {
+        RefreshReferences();
+
+        bool hasAnyTarget = false;
+
+        if (farmManager != null)
+            hasAnyTarget = true;
+
+        if (unlockManager != null)
+            hasAnyTarget = true;
+
+        if (islandSetManager != null)
+            hasAnyTarget = true;
+
+        if (!hasAnyTarget)
+        {
+            Debug.LogWarning("[RewardProcessor] 현재 씬에 보상을 적용할 대상 매니저가 없습니다.", this);
+            return false;
+        }
+
+        if (applyGrowthToCrops && reward.rewardGrowth > 0)
+        {
+            if (farmManager != null)
+                farmManager.AddGrowthToAllCrops(reward.rewardGrowth);
+
+            if (islandSetManager != null)
+                islandSetManager.AddGrowthToActivatedIslandCrops(reward.rewardGrowth);
+        }
+
+        if (applyUnlockProgress && reward.rewardUnlockProgress > 0 && unlockManager != null)
+        {
+            UnlockEntry nextBeforeUnlock = unlockManager.GetNextLockedEntry();
+
+            unlockManager.AddProgress(reward.rewardUnlockProgress);
+
+            List<IslandSetController> newlyUnlockedIslands = null;
+
+            if (islandSetManager != null)
+            {
+                newlyUnlockedIslands =
+                    islandSetManager.RefreshUnlocksFromProgress(unlockManager.totalProgress);
+            }
+
+            if (focusMusicPlayer != null)
+            {
+                focusMusicPlayer.RefreshUnlockedTracksFromProgress(unlockManager.totalProgress);
+            }
+
+            if (newlyUnlockedIslands != null && newlyUnlockedIslands.Count > 0)
+            {
+                foreach (IslandSetController unlockedIsland in newlyUnlockedIslands)
+                {
+                    if (unlockedIsland == null)
+                        continue;
+
+                    reward.AddUnlockedElement(
+                        unlockedIsland.islandId,
+                        unlockedIsland.displayName
+                    );
+                }
+            }
+            else if (nextBeforeUnlock != null && nextBeforeUnlock.unlocked)
+            {
+                reward.unlockedSomething = true;
+                reward.unlockedId = nextBeforeUnlock.unlockId;
+                reward.unlockedDisplayName = nextBeforeUnlock.displayName;
+            }
+        }
+
+        if (applyGoldReward && reward.rewardGold > 0 && farmManager != null)
+        {
+            farmManager.AddGold(reward.rewardGold);
+        }
+
+        if (reward.rewardStamina > 0 && farmManager != null)
+        {
+            farmManager.AddStamina(reward.rewardStamina);
+        }
+
+        return true;
+    }
+
+    private void LoadUnlockPreviewDatabaseIfNeeded()
+    {
+        if (unlockPreviewDatabase != null)
+            return;
+
+        unlockPreviewDatabase =
+            Resources.Load<UnlockPreviewDatabase>(unlockPreviewDatabaseResourcePath);
+
+        if (unlockPreviewDatabase == null)
+        {
+            Debug.LogWarning(
+                $"[RewardProcessor] UnlockPreviewDatabase를 찾지 못했습니다. " +
+                $"Resources/{unlockPreviewDatabaseResourcePath}.asset 경로를 확인하세요.",
+                this
+            );
+        }
+    }
+
+
 
     [ContextMenu("Test Process Success 10 Min")]
     public void TestProcessSuccess10Min()

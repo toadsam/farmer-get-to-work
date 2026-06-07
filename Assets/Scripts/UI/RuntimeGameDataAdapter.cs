@@ -13,6 +13,27 @@ namespace FarmerGetToWork
     {
         public const string MainFarmSceneName = "KBW";
 
+        public static bool UseShortFocusSessionForEditorTest = true; //에디터에서 시간 설정 어떤 걸 하든 10초로 고정되는 옵션
+        public static bool UseShortFocusSessionInBuild = true; ////빌드 파일에서 시간 설정 어떤 걸 하든 10초로 고정되는 옵션
+        public static float ShortFocusSessionSeconds = 10f;
+
+        public static bool IsShortFocusSessionTestModeEnabled()
+        {
+#if UNITY_EDITOR
+            return UseShortFocusSessionForEditorTest;
+#else
+    return UseShortFocusSessionInBuild;
+#endif
+        }
+
+        public static float GetActualSessionSecondsForRuntime(int plannedMinutes)
+        {
+            if (IsShortFocusSessionTestModeEnabled())
+                return Mathf.Max(1f, ShortFocusSessionSeconds);
+
+            return Mathf.Max(1, plannedMinutes) * 60f;
+        }
+
         public static global::SceneFlowManager SceneFlow
         {
             get
@@ -128,10 +149,10 @@ namespace FarmerGetToWork
         }
 
         public static void SetSelectedSession(
-            string goalName,
-            int plannedMinutes,
-            int expectedGoldForLegacyUI
-        )
+    string goalName,
+    int plannedMinutes,
+    int expectedGoldForLegacyUI
+)
         {
             string safeGoalName = string.IsNullOrWhiteSpace(goalName) ? "공부하기" : goalName;
             int safeMinutes = Mathf.Clamp(plannedMinutes, 5, 180);
@@ -145,12 +166,35 @@ namespace FarmerGetToWork
                 return;
             }
 
+            bool useTestDuration = IsShortFocusSessionTestModeEnabled();
+            float testDurationSeconds = useTestDuration
+                ? Mathf.Max(1f, ShortFocusSessionSeconds)
+                : 0f;
+
             gameState.SetSelectedGoal(
                 ResolveGoalType(safeGoalName),
                 safeGoalName,
                 safeMinutes,
-                safeMinutes
+                safeMinutes,
+                useTestDuration,
+                testDurationSeconds
             );
+
+            if (useTestDuration)
+            {
+                Debug.Log(
+                    $"[RuntimeGameDataAdapter] 테스트 세션 설정 / " +
+                    $"표시 목표: {safeGoalName} {safeMinutes}분, " +
+                    $"실제 진행 시간: {testDurationSeconds:F1}초"
+                );
+            }
+            else
+            {
+                Debug.Log(
+                    $"[RuntimeGameDataAdapter] 실제 세션 설정 / " +
+                    $"{safeGoalName} {safeMinutes}분"
+                );
+            }
         }
 
         public static FocusSessionConfig GetSelectedSessionOrFallback()
@@ -159,11 +203,24 @@ namespace FarmerGetToWork
             if (gameState != null && gameState.HasSelectedSession)
                 return gameState.selectedSessionConfig;
 
+            string fallbackGoalName = string.IsNullOrWhiteSpace(GameData.selectedGoalName)
+                ? "공부하기"
+                : GameData.selectedGoalName;
+
+            int fallbackMinutes = Mathf.Clamp(GameData.selectedGoalMinutes, 5, 180);
+
+            bool useTestDuration = IsShortFocusSessionTestModeEnabled();
+            float testDurationSeconds = useTestDuration
+                ? Mathf.Max(1f, ShortFocusSessionSeconds)
+                : 0f;
+
             global::FocusSessionConfig fallback = global::FocusSessionConfig.Create(
-                ResolveGoalType(GameData.selectedGoalName),
-                GameData.selectedGoalName,
-                Mathf.Clamp(GameData.selectedGoalMinutes, 5, 180),
-                Mathf.Clamp(GameData.selectedGoalMinutes, 5, 180)
+                ResolveGoalType(fallbackGoalName),
+                fallbackGoalName,
+                fallbackMinutes,
+                fallbackMinutes,
+                useTestDuration,
+                testDurationSeconds
             );
 
             gameState?.SetSelectedSession(fallback);
