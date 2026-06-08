@@ -3824,6 +3824,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 781721905417068839, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1114277370210226374, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_text
       value: "\uB3C5\uC11C\uD558\uAE30"
@@ -3856,6 +3860,10 @@ PrefabInstance:
       propertyPath: m_TextStyleHashCode
       value: -1183493901
       objectReference: {fileID: 0}
+    - target: {fileID: 3815666749291538305, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -105
+      objectReference: {fileID: 0}
     - target: {fileID: 4178480772881824782, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_text
       value: +80
@@ -3872,6 +3880,22 @@ PrefabInstance:
       propertyPath: m_TextStyleHashCode
       value: -1183493901
       objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c20af19ab9a4cb54e9ba7a1083e4d367, type: 3}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5398216843743989505, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_SizeDelta.x
       value: 416
@@ -3879,6 +3903,10 @@ PrefabInstance:
     - target: {fileID: 5398216843743989505, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_SizeDelta.y
       value: 266
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472436142672285307, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6155710550695120368, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_Pivot.x
@@ -3963,6 +3991,22 @@ PrefabInstance:
     - target: {fileID: 7119778328228315990, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_Name
       value: ActivityCard_Read
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 728cdcd1ecd8ca243be0794772fb4f98, type: 3}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4180,6 +4224,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 781721905417068839, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1114277370210226374, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_text
       value: "\uC6B4\uB3D9\uD558\uAE30"
@@ -4212,6 +4260,10 @@ PrefabInstance:
       propertyPath: m_TextStyleHashCode
       value: -1183493901
       objectReference: {fileID: 0}
+    - target: {fileID: 3815666749291538305, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -105
+      objectReference: {fileID: 0}
     - target: {fileID: 4178480772881824782, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_text
       value: +60
@@ -4227,6 +4279,22 @@ PrefabInstance:
     - target: {fileID: 4178480772881824782, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_TextStyleHashCode
       value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 984ebeeccda033349b3f366298134dad, type: 3}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5398216843743989505, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_SizeDelta.x
@@ -4319,6 +4387,22 @@ PrefabInstance:
     - target: {fileID: 7119778328228315990, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_Name
       value: ActivityCard_Exercise
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 728cdcd1ecd8ca243be0794772fb4f98, type: 3}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4613,6 +4697,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 781721905417068839, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1114277370210226374, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_text
       value: "\uACF5\uBD80\uD558\uAE30"
@@ -4645,6 +4733,10 @@ PrefabInstance:
       propertyPath: m_TextStyleHashCode
       value: -1183493901
       objectReference: {fileID: 0}
+    - target: {fileID: 3815666749291538305, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -105
+      objectReference: {fileID: 0}
     - target: {fileID: 4178480772881824782, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_sharedMaterial
       value: 
@@ -4656,6 +4748,22 @@ PrefabInstance:
     - target: {fileID: 4178480772881824782, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_TextStyleHashCode
       value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1a0669a5961f2644697c9b2e7eb2187e, type: 3}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5398216843743989505, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_SizeDelta.x
@@ -4748,6 +4856,22 @@ PrefabInstance:
     - target: {fileID: 7119778328228315990, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_Name
       value: ActivityCard_Study
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 728cdcd1ecd8ca243be0794772fb4f98, type: 3}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6064,6 +6188,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 781721905417068839, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1114277370210226374, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_text
       value: "\uC218\uBA74 \uC900\uBE44"
@@ -6096,6 +6224,10 @@ PrefabInstance:
       propertyPath: m_TextStyleHashCode
       value: -1183493901
       objectReference: {fileID: 0}
+    - target: {fileID: 3815666749291538305, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -105
+      objectReference: {fileID: 0}
     - target: {fileID: 4178480772881824782, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_text
       value: +70
@@ -6111,6 +6243,22 @@ PrefabInstance:
     - target: {fileID: 4178480772881824782, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_TextStyleHashCode
       value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7018659a58f1af64dbe27d8751a2bdd9, type: 3}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4747934866198486542, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5398216843743989505, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_SizeDelta.x
@@ -6203,6 +6351,22 @@ PrefabInstance:
     - target: {fileID: 7119778328228315990, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_Name
       value: ActivityCard_Sleep
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 728cdcd1ecd8ca243be0794772fb4f98, type: 3}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014711973648378330, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

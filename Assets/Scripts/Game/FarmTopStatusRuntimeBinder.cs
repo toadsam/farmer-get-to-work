@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FarmTopStatusRuntimeBinder : MonoBehaviour
 {
+    private const string PersistenceKey = "TopStatusBar";
+
     [Header("Texts")]
     public TMP_Text goldText;
     public TMP_Text staminaText;
@@ -21,20 +23,46 @@ public class FarmTopStatusRuntimeBinder : MonoBehaviour
 
     private FarmManager farmManager;
     private float refreshTimer;
+    private bool isChromeInstance = true;
+
+    private void Awake()
+    {
+        isChromeInstance = SceneChromePersistence.KeepSingleInstance(
+            gameObject,
+            PersistenceKey
+        );
+    }
 
     private void OnEnable()
     {
+        if (!isChromeInstance)
+            return;
+
         BindFarmManager();
         Refresh();
     }
 
     private void OnDisable()
     {
+        if (!isChromeInstance)
+            return;
+
         UnbindFarmManager();
+    }
+
+    private void OnDestroy()
+    {
+        if (!isChromeInstance)
+            return;
+
+        SceneChromePersistence.Release(gameObject, PersistenceKey);
     }
 
     private void LateUpdate()
     {
+        if (!isChromeInstance)
+            return;
+
         if (!refreshInLateUpdate)
             return;
 
