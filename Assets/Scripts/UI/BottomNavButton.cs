@@ -48,7 +48,12 @@ namespace FarmerGetToWork
 
             if (buttonSkinImage != null)
             {
-                buttonSkinImage.sprite = highlighted && selectedSprite != null ? selectedSprite : normalSprite;
+                Sprite stateSprite = highlighted && selectedSprite != null ? selectedSprite : normalSprite;
+                if (stateSprite != null)
+                {
+                    buttonSkinImage.sprite = stateSprite;
+                }
+
                 buttonSkinImage.color = highlighted ? selectedColor : normalColor;
             }
 
