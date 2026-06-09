@@ -101,6 +101,8 @@ namespace FarmerGetToWork
 
         private void SetupCards()
         {
+            SortActivityCardsByGoalOrder();
+
             string[] names = { "공부하기", "독서하기", "운동하기", "수면 준비" };
             string[] descriptions = { "집중력 향상", "지식 성장", "체력 단련", "숙면 습관" };
             int[] rewards = { 120, 80, 60, 70 };
@@ -217,6 +219,8 @@ namespace FarmerGetToWork
                 }
             }
 
+
+
             plusButton ??= UIBinder.FindButton(transform.root, "Btn_Plus");
             minusButton ??= UIBinder.FindButton(transform.root, "Btn_Minus");
             startSessionButton ??= UIBinder.FindButton(transform.root, "Btn_StartSession");
@@ -226,6 +230,36 @@ namespace FarmerGetToWork
             Transform expectedGrowthPanel = UIBinder.FindDeepChild(transform.root, "Panel_ExpectedGrowth");
             expectedRewardText ??= expectedRewardPanel == null ? null : UIBinder.FindText(expectedRewardPanel, "Txt_Value");
             expectedGrowthText ??= expectedGrowthPanel == null ? null : UIBinder.FindText(expectedGrowthPanel, "Txt_Value");
+        }
+
+        private void SortActivityCardsByGoalOrder()
+        {
+            activityCards = activityCards
+                .Where(card => card != null)
+                .OrderBy(GetActivityCardOrder)
+                .ToList();
+        }
+
+        private int GetActivityCardOrder(GoalCardUI card)
+        {
+            if (card == null)
+                return 999;
+
+            string cardName = card.name;
+
+            if (cardName.Contains("Study"))
+                return 0;
+
+            if (cardName.Contains("Read"))
+                return 1;
+
+            if (cardName.Contains("Exercise"))
+                return 2;
+
+            if (cardName.Contains("Sleep"))
+                return 3;
+
+            return 999;
         }
     }
 }

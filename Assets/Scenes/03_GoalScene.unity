@@ -4079,6 +4079,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6658925499212289845, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7119778328228315990, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_Name
       value: ActivityCard_Read
@@ -4473,6 +4477,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6155710550695120368, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6658925499212289845, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7119778328228315990, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
@@ -4942,6 +4950,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6155710550695120368, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6658925499212289845, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7119778328228315990, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
@@ -6437,6 +6449,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6155710550695120368, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6658925499212289845, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7119778328228315990, guid: 63f212ce4dbadaa458416469714816a2, type: 3}
