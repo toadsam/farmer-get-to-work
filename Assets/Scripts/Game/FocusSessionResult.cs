@@ -16,4 +16,7 @@ public class FocusSessionResult
 
     public DateTime startedAt;
     public DateTime endedAt;
+
+    public string musicTrackId;
+    public SessionEmotionData emotionData;
 }

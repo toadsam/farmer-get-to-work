@@ -10,6 +10,8 @@ public class FocusMusicTrack
 
     public AudioClip clip;
 
+    public bool isSilentTrack = false;
+
     public bool unlockedByDefault = true;
 
     [Tooltip("해금 진행도가 이 값 이상이면 해금됩니다.")]
@@ -198,6 +200,22 @@ public class FocusMusicPlayer : MonoBehaviour
         {
             Debug.LogWarning($"[FocusMusicPlayer] 아직 해금되지 않은 음악입니다: {track.displayName}", this);
             PlayFocusMusic();
+            return;
+        }
+
+        if (track.isSilentTrack)
+        {
+            if (audioSource == null)
+                audioSource = GetComponent<AudioSource>();
+
+            if (audioSource != null)
+                audioSource.Stop();
+
+            CurrentTrack = track;
+            lastTrackIndex = tracks.IndexOf(track);
+
+            Debug.Log($"[FocusMusicPlayer] 무음 모드 선택: {track.displayName}");
+            OnMusicStarted?.Invoke(track);
             return;
         }
 
@@ -397,7 +415,10 @@ public class FocusMusicPlayer : MonoBehaviour
     {
         List<FocusMusicTrack> unlockedTracks = GetUnlockedTracks();
 
-        unlockedTracks.RemoveAll(track => track == null || track.clip == null);
+        unlockedTracks.RemoveAll(track =>
+            track == null ||
+            (!track.isSilentTrack && track.clip == null)
+        );
 
         if (unlockedTracks.Count == 0)
             return null;
@@ -418,7 +439,7 @@ public class FocusMusicPlayer : MonoBehaviour
             if (track == null)
                 continue;
 
-            if (track.clip == null)
+            if (!track.isSilentTrack && track.clip == null)
                 continue;
 
             if (IsTrackUnlocked(track.trackId))

@@ -232,6 +232,24 @@ public class SessionRecordManager : MonoBehaviour
             summary.totalRewardGrowth += record.rewardGrowth;
             summary.totalRewardUnlockProgress += record.rewardUnlockProgress;
             summary.totalRewardGold += record.rewardGold;
+
+            if (record.beforeMoodScore > 0 && record.afterMoodScore > 0)
+            {
+                summary.totalMoodDelta += record.moodDelta;
+                summary.moodRecordCount++;
+            }
+
+            if (record.beforePhoneUrgeLevel > 0 && record.afterPhoneUrgeLevel > 0)
+            {
+                summary.totalPhoneUrgeDelta += record.phoneUrgeDelta;
+                summary.phoneUrgeRecordCount++;
+            }
+
+            if (record.musicHelpedLevel > 0)
+            {
+                summary.totalMusicHelpedLevel += record.musicHelpedLevel;
+                summary.musicHelpedRecordCount++;
+            }
         }
 
         if (summary.totalSessionCount > 0)
@@ -239,6 +257,25 @@ public class SessionRecordManager : MonoBehaviour
             summary.successRate =
                 (float)summary.successSessionCount / summary.totalSessionCount;
         }
+
+        if (summary.moodRecordCount > 0)
+        {
+            summary.averageMoodDelta =
+                (float)summary.totalMoodDelta / summary.moodRecordCount;
+        }
+
+        if (summary.phoneUrgeRecordCount > 0)
+        {
+            summary.averagePhoneUrgeDelta =
+                (float)summary.totalPhoneUrgeDelta / summary.phoneUrgeRecordCount;
+        }
+
+        if (summary.musicHelpedRecordCount > 0)
+        {
+            summary.averageMusicHelpedLevel =
+                (float)summary.totalMusicHelpedLevel / summary.musicHelpedRecordCount;
+        }
+
 
         return summary;
     }
@@ -300,6 +337,44 @@ public class SessionRecordManager : MonoBehaviour
     {
         records.Clear();
         Debug.Log("[SessionRecord] 모든 기록 삭제");
+    }
+
+    public bool UpdateLatestRecordAfterEmotion(SessionEmotionData afterEmotionData)
+    {
+        if (afterEmotionData == null)
+            return false;
+
+        if (records == null || records.Count == 0)
+        {
+            Debug.LogWarning("[SessionRecord] 업데이트할 최근 기록이 없습니다.", this);
+            return false;
+        }
+
+        FocusSessionRecordData record = records[records.Count - 1];
+
+        record.afterMoodId = afterEmotionData.afterMoodId;
+        record.afterMoodScore = afterEmotionData.afterMoodScore;
+        record.afterPhoneUrgeLevel = afterEmotionData.afterPhoneUrgeLevel;
+        record.afterReflectionText = afterEmotionData.afterReflectionText;
+
+        record.musicHelpedLevel = afterEmotionData.musicHelpedLevel;
+        record.musicReactionText = afterEmotionData.musicReactionText;
+
+        if (record.beforeMoodScore > 0 && record.afterMoodScore > 0)
+            record.moodDelta = record.afterMoodScore - record.beforeMoodScore;
+
+        if (record.beforePhoneUrgeLevel > 0 && record.afterPhoneUrgeLevel > 0)
+            record.phoneUrgeDelta = record.beforePhoneUrgeLevel - record.afterPhoneUrgeLevel;
+
+        Debug.Log(
+            $"[SessionRecord] 세션 후 감정 업데이트 / 기분 변화 {record.moodDelta}, " +
+            $"스마트폰 욕구 변화 {record.phoneUrgeDelta}, 음악 도움 {record.musicHelpedLevel}"
+        );
+
+        if (SaveSystem.Instance != null)
+            SaveSystem.Instance.SaveGame();
+
+        return true;
     }
 
     [ContextMenu("Test Add Success Record")]
@@ -395,4 +470,17 @@ public class SessionSummaryData
     public int totalRewardGold;
 
     public float successRate;
+
+    public int totalMoodDelta;
+    public int moodRecordCount;
+
+    public int totalPhoneUrgeDelta;
+    public int phoneUrgeRecordCount;
+
+    public float averageMoodDelta;
+    public float averagePhoneUrgeDelta;
+
+    public int totalMusicHelpedLevel;
+    public int musicHelpedRecordCount;
+    public float averageMusicHelpedLevel;
 }

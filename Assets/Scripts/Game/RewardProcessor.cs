@@ -124,6 +124,15 @@ public class RewardProcessor : MonoBehaviour
             );
         }
 
+        if (result.totalExitSeconds >= failExitSeconds)
+        {
+            return RewardResultData.CreateFailure(
+                reasonCode: "LongExit",
+                reasonMessage: "앱 이탈 시간이 길어 집중 흐름이 끊겼습니다. 농장 성장은 적용되지 않았습니다.",
+                focusedMinutes: result.focusedMinutes
+            );
+        }
+
         if (!result.success)
         {
             return RewardResultData.CreateFailure(
@@ -138,15 +147,6 @@ public class RewardProcessor : MonoBehaviour
             return RewardResultData.CreateFailure(
                 reasonCode: "TooShort",
                 reasonMessage: "집중 시간이 최소 보상 시간보다 짧아 성장이 적용되지 않았습니다.",
-                focusedMinutes: result.focusedMinutes
-            );
-        }
-
-        if (result.totalExitSeconds >= failExitSeconds)
-        {
-            return RewardResultData.CreateFailure(
-                reasonCode: "LongExit",
-                reasonMessage: "앱 이탈 시간이 길어 집중 흐름이 끊겼습니다. 농장 성장은 적용되지 않았습니다.",
                 focusedMinutes: result.focusedMinutes
             );
         }
