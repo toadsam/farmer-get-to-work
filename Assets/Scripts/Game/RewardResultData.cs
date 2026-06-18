@@ -1,12 +1,6 @@
 using System;
 using System.Collections.Generic;
-
-[Serializable]
-public class UnlockedElementResultData
-{
-    public string unlockId;
-    public string displayName;
-}
+using System.Text;
 
 [Serializable]
 public class RewardResultData
@@ -29,80 +23,12 @@ public class RewardResultData
     public string unlockedId;
     public string unlockedDisplayName;
 
-    public List<UnlockedElementResultData> unlockedElements =
-        new List<UnlockedElementResultData>();
+    public List<UnlockedRewardElementData> unlockedElements =
+        new List<UnlockedRewardElementData>();
 
     public int rewardStamina;
 
     public bool appliedToWorldState;
-
-    public void AddUnlockedElement(string unlockId, string displayName)
-    {
-        if (string.IsNullOrEmpty(unlockId) && string.IsNullOrEmpty(displayName))
-            return;
-
-        if (unlockedElements == null)
-            unlockedElements = new List<UnlockedElementResultData>();
-
-        foreach (UnlockedElementResultData element in unlockedElements)
-        {
-            if (element == null)
-                continue;
-
-            if (element.unlockId == unlockId)
-                return;
-        }
-
-        unlockedElements.Add(new UnlockedElementResultData
-        {
-            unlockId = unlockId,
-            displayName = displayName
-        });
-
-        unlockedSomething = true;
-
-        if (string.IsNullOrEmpty(unlockedId))
-            unlockedId = unlockId;
-
-        if (string.IsNullOrEmpty(unlockedDisplayName))
-            unlockedDisplayName = displayName;
-    }
-
-    public int GetUnlockedElementCount()
-    {
-        if (unlockedElements == null)
-            return 0;
-
-        return unlockedElements.Count;
-    }
-
-    public string GetUnlockedDisplayNamesText()
-    {
-        if (unlockedElements == null || unlockedElements.Count == 0)
-        {
-            if (!string.IsNullOrEmpty(unlockedDisplayName))
-                return unlockedDisplayName;
-
-            return "";
-        }
-
-        string result = "";
-
-        for (int i = 0; i < unlockedElements.Count; i++)
-        {
-            UnlockedElementResultData element = unlockedElements[i];
-
-            if (element == null)
-                continue;
-
-            if (!string.IsNullOrEmpty(result))
-                result += "\n";
-
-            result += $"- {element.displayName}";
-        }
-
-        return result;
-    }
 
     public static RewardResultData CreateFailure(
         string reasonCode,
@@ -147,4 +73,96 @@ public class RewardResultData
             rewardMultiplier = rewardMultiplier
         };
     }
+
+    public void AddUnlockedElement(string id, string displayName)
+    {
+        if (string.IsNullOrEmpty(id) && string.IsNullOrEmpty(displayName))
+            return;
+
+        if (unlockedElements == null)
+            unlockedElements = new List<UnlockedRewardElementData>();
+
+        foreach (UnlockedRewardElementData element in unlockedElements)
+        {
+            if (element == null)
+                continue;
+
+            if (!string.IsNullOrEmpty(id) && element.unlockId == id)
+                return;
+        }
+
+        unlockedElements.Add(new UnlockedRewardElementData
+        {
+            unlockId = id,
+            displayName = displayName
+        });
+
+        unlockedSomething = true;
+
+        if (string.IsNullOrEmpty(unlockedId))
+            unlockedId = id;
+
+        if (string.IsNullOrEmpty(unlockedDisplayName))
+            unlockedDisplayName = displayName;
+    }
+
+    public int GetUnlockedElementCount()
+    {
+        int count = 0;
+
+        if (unlockedElements != null)
+        {
+            foreach (UnlockedRewardElementData element in unlockedElements)
+            {
+                if (element != null)
+                    count++;
+            }
+        }
+
+        if (count == 0 &&
+            unlockedSomething &&
+            !string.IsNullOrEmpty(unlockedDisplayName))
+        {
+            count = 1;
+        }
+
+        return count;
+    }
+
+    public string GetUnlockedDisplayNamesText()
+    {
+        if (unlockedElements != null && unlockedElements.Count > 0)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            foreach (UnlockedRewardElementData element in unlockedElements)
+            {
+                if (element == null)
+                    continue;
+
+                if (string.IsNullOrEmpty(element.displayName))
+                    continue;
+
+                if (builder.Length > 0)
+                    builder.Append(", ");
+
+                builder.Append(element.displayName);
+            }
+
+            if (builder.Length > 0)
+                return builder.ToString();
+        }
+
+        if (!string.IsNullOrEmpty(unlockedDisplayName))
+            return unlockedDisplayName;
+
+        return "새로운 요소";
+    }
+}
+
+[Serializable]
+public class UnlockedRewardElementData
+{
+    public string unlockId;
+    public string displayName;
 }

@@ -112,4 +112,39 @@ public class GameStateManager : MonoBehaviour
 
         Debug.Log("[GameState] 마지막 세션 결과 초기화");
     }
+
+    public void SetSelectedMusicTrack(string musicTrackId)
+    {
+        if (selectedSessionConfig == null)
+            selectedSessionConfig = new FocusSessionConfig();
+
+        selectedSessionConfig.musicTrackId = musicTrackId;
+
+        Debug.Log($"[GameState] 선택 음악 저장: {musicTrackId}");
+    }
+
+    public void SetBeforeEmotionData(SessionEmotionData emotionData)
+    {
+        if (selectedSessionConfig == null)
+            selectedSessionConfig = new FocusSessionConfig();
+
+        if (emotionData == null)
+            emotionData = new SessionEmotionData();
+
+        selectedSessionConfig.emotionData = emotionData.Clone();
+
+        Debug.Log(
+            $"[GameState] 세션 전 감정 저장 / 기분: {emotionData.beforeMoodId}, " +
+            $"점수: {emotionData.beforeMoodScore}, 욕구: {emotionData.beforePhoneUrgeLevel}"
+        );
+    }
+
+    public void SetSelectedMusicAndBeforeEmotion(
+        string musicTrackId,
+        SessionEmotionData emotionData
+    )
+    {
+        SetSelectedMusicTrack(musicTrackId);
+        SetBeforeEmotionData(emotionData);
+    }
 }

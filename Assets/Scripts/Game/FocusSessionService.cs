@@ -107,15 +107,21 @@ public class FocusSessionService : MonoBehaviour
         if (runtimeData == null || !runtimeData.isRunning)
             return;
 
+        runtimeData.exitCount = CurrentExitCount;
+        runtimeData.totalExitSeconds = CurrentTotalExitSeconds;
+
+        if (ShouldFailByLongExit())
+        {
+            FailSessionByLongExit();
+            return;
+        }
+
         runtimeData.remainingSeconds -= Time.deltaTime;
 
         if (runtimeData.remainingSeconds < 0f)
             runtimeData.remainingSeconds = 0f;
 
         runtimeData.elapsedSeconds = runtimeData.durationSeconds - runtimeData.remainingSeconds;
-
-        runtimeData.exitCount = CurrentExitCount;
-        runtimeData.totalExitSeconds = CurrentTotalExitSeconds;
 
         OnSessionTick?.Invoke(runtimeData);
 
@@ -259,7 +265,12 @@ public class FocusSessionService : MonoBehaviour
             totalExitSeconds = runtimeData.totalExitSeconds,
 
             startedAt = GameDataUtility.FromTicks(runtimeData.startedAtTicks),
-            endedAt = GameDataUtility.FromTicks(runtimeData.endedAtTicks)
+            endedAt = GameDataUtility.FromTicks(runtimeData.endedAtTicks),
+
+            musicTrackId = runtimeData.config.musicTrackId,
+            emotionData = runtimeData.config.emotionData != null
+        ? runtimeData.config.emotionData.Clone()
+        : new SessionEmotionData()
         };
 
         LastResult = result;
@@ -318,6 +329,10 @@ public class FocusSessionService : MonoBehaviour
             testDurationSeconds = source.testDurationSeconds,
 
             musicTrackId = source.musicTrackId,
+            emotionData = source.emotionData != null
+                ? source.emotionData.Clone()
+                : new SessionEmotionData(),
+
             selectedAtTicks = source.selectedAtTicks
         };
     }
@@ -341,6 +356,36 @@ public class FocusSessionService : MonoBehaviour
     public string GetExitInfoText()
     {
         return $"이탈 {CurrentExitCount}회 / {CurrentTotalExitSeconds:F1}초";
+    }
+
+    private bool ShouldFailByLongExit()
+    {
+        if (!IsRunning)
+            return false;
+
+        float failSeconds = 180f;
+
+        if (rewardProcessor == null)
+            rewardProcessor = FindAnyObjectByType<RewardProcessor>();
+
+        if (rewardProcessor != null)
+            failSeconds = rewardProcessor.failExitSeconds;
+
+        return CurrentTotalExitSeconds >= failSeconds;
+    }
+
+    private void FailSessionByLongExit()
+    {
+        if (!IsRunning)
+            return;
+
+        int focusedMinutes = runtimeData.GetFocusedMinutes();
+
+        FinishSession(
+            rawSuccess: false,
+            forcedFocusedMinutes: focusedMinutes,
+            reason: "LongExit"
+        );
     }
 
     [ContextMenu("Test Start Study 10 Sec")]

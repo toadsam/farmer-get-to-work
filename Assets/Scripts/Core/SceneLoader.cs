@@ -24,6 +24,8 @@ namespace FarmerGetToWork
         public const string ShopScene = "07_ShopScene";
         public const string CollectionScene = "08_CollectionScene";
         public const string RecordScene = "09_RecordScene";
+        public const string SessionSetupScene = "KBW_TempDTxBefore";
+        public const string AfterSessionScene = "KBW_TempDTxAfter";
 
         public static void LoadScene(string sceneName)
         {
@@ -84,6 +86,16 @@ namespace FarmerGetToWork
         public void LoadRecordScene()
         {
             LoadScene(RecordScene);
+        }
+
+        public void LoadSessionSetupScene()
+        {
+            LoadScene(SessionSetupScene);
+        }
+
+        public void LoadAfterSessionScene()
+        {
+            LoadScene(AfterSessionScene);
         }
 
         public void QuitGame()

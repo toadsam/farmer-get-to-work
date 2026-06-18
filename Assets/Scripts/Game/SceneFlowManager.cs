@@ -11,6 +11,7 @@ public class SceneFlowManager : MonoBehaviour
     public string tutorialSceneName = "01_TutorialScene";
     public string homeSceneName = "KBW";
     public string goalSceneName = "03_GoalScene";
+    public string sessionSetupSceneName = "KBW_TempDTx";
     public string focusSceneName = "04_FocusScene";
     public string successSceneName = "05_SuccessScene";
     public string failSceneName = "06_FailScene";
@@ -84,6 +85,10 @@ public class SceneFlowManager : MonoBehaviour
         LoadScene(recordSceneName);
     }
 
+    public void GoSessionSetup()
+    {
+        LoadScene(sessionSetupSceneName);
+    }
     public void LoadScene(string sceneName)
     {
         if (string.IsNullOrEmpty(sceneName))

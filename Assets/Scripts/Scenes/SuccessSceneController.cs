@@ -19,7 +19,7 @@ namespace FarmerGetToWork
             backToFarmButton ??= UIBinder.FindButton(transform.root, "Btn_BackToFarm");
             if (backToFarmButton != null)
             {
-                backToFarmButton.onClick.AddListener(() => RuntimeGameDataAdapter.GoMainFarm());
+                backToFarmButton.onClick.AddListener(() => RuntimeGameDataAdapter.LoadScene("KBW_TempDTxAfter"));
             }
 
             Transform goldPanel = UIBinder.FindDeepChild(transform.root, "Panel_GoldReward");

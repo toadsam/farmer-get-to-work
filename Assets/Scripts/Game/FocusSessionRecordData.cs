@@ -28,6 +28,24 @@ public class FocusSessionRecordData
     public string failReasonCode;
     public string failReasonMessage;
 
+    public string musicTrackId;
+
+    public string beforeMoodId;
+    public int beforeMoodScore;
+    public int beforePhoneUrgeLevel;
+    public string beforeReasonText;
+
+    public string afterMoodId;
+    public int afterMoodScore;
+    public int afterPhoneUrgeLevel;
+    public string afterReflectionText;
+
+    public int musicHelpedLevel;
+    public string musicReactionText;
+
+    public int moodDelta;
+    public int phoneUrgeDelta;
+
     public static FocusSessionRecordData FromResult(
         FocusSessionResult result,
         RewardResultData reward
@@ -36,7 +54,11 @@ public class FocusSessionRecordData
         if (result == null)
             return null;
 
-        DateTime endedAt = result.endedAt == default ? DateTime.Now : result.endedAt;
+        DateTime endedAt = result.endedAt == default
+            ? DateTime.Now
+            : result.endedAt;
+
+        SessionEmotionData emotion = result.emotionData;
 
         return new FocusSessionRecordData
         {
@@ -62,7 +84,25 @@ public class FocusSessionRecordData
             endedAtTicks = endedAt.Ticks,
 
             failReasonCode = reward != null ? reward.failReasonCode : "",
-            failReasonMessage = reward != null ? reward.failReasonMessage : ""
+            failReasonMessage = reward != null ? reward.failReasonMessage : "",
+
+            musicTrackId = result.musicTrackId,
+
+            beforeMoodId = emotion != null ? emotion.beforeMoodId : "",
+            beforeMoodScore = emotion != null ? emotion.beforeMoodScore : 0,
+            beforePhoneUrgeLevel = emotion != null ? emotion.beforePhoneUrgeLevel : 0,
+            beforeReasonText = emotion != null ? emotion.beforeReasonText : "",
+
+            afterMoodId = emotion != null ? emotion.afterMoodId : "",
+            afterMoodScore = emotion != null ? emotion.afterMoodScore : 0,
+            afterPhoneUrgeLevel = emotion != null ? emotion.afterPhoneUrgeLevel : 0,
+            afterReflectionText = emotion != null ? emotion.afterReflectionText : "",
+
+            musicHelpedLevel = emotion != null ? emotion.musicHelpedLevel : 0,
+            musicReactionText = emotion != null ? emotion.musicReactionText : "",
+
+            moodDelta = emotion != null ? emotion.MoodDelta : 0,
+            phoneUrgeDelta = emotion != null ? emotion.PhoneUrgeDelta : 0
         };
     }
 }

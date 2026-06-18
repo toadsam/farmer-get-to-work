@@ -19,6 +19,9 @@ public class FocusSessionConfig
     [Header("Optional")]
     public string musicTrackId;
 
+    [Header("DTx Self Report")]
+    public SessionEmotionData emotionData = new SessionEmotionData();
+
     public long selectedAtTicks;
 
     public bool IsValid()
@@ -54,7 +57,8 @@ public class FocusSessionConfig
             rewardMinutes = rewardMinutes,
             useTestDuration = useTestDuration,
             testDurationSeconds = testDurationSeconds,
-            selectedAtTicks = DateTime.Now.Ticks
+            selectedAtTicks = DateTime.Now.Ticks,
+            emotionData = new SessionEmotionData(),
         };
     }
 }

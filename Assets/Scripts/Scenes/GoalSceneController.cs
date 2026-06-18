@@ -96,7 +96,7 @@ namespace FarmerGetToWork
                 expectedGold
             );
 
-            SceneLoader.LoadScene(SceneLoader.FocusScene);
+            SceneLoader.LoadScene(SceneLoader.SessionSetupScene);
         }
 
         private void SetupCards()

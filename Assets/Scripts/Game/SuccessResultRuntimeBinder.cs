@@ -12,6 +12,7 @@ public class SuccessResultRuntimeBinder : MonoBehaviour
     public TMP_Text staminaText;
     public TMP_Text unlockedElementTitleText;
     public TMP_Text unlockedElementDescriptionText;
+    public TMP_Text exitPenaltyText;
 
     [Header("Optional Roots")]
     public GameObject unlockedElementRoot;
@@ -50,6 +51,9 @@ public class SuccessResultRuntimeBinder : MonoBehaviour
         if (summaryText != null)
             summaryText.text = $"{result.goalName} {result.focusedMinutes}분을 완료했어요.";
 
+        if (exitPenaltyText != null)
+            exitPenaltyText.text = BuildExitPenaltyText(result, reward);
+
         if (growthText != null)
             growthText.text = $"작물 성장 +{reward.rewardGrowth}";
 
@@ -59,7 +63,6 @@ public class SuccessResultRuntimeBinder : MonoBehaviour
         if (staminaText != null)
             staminaText.text = $"스태미너 +{reward.rewardStamina}";
 
-        // 여기부터 교체
         int unlockedCount = reward.GetUnlockedElementCount();
 
         bool hasUnlocked =
@@ -203,7 +206,50 @@ public class SuccessResultRuntimeBinder : MonoBehaviour
         if (staminaText != null)
             staminaText.text = "스태미너 +0";
 
+        if (exitPenaltyText != null)
+            exitPenaltyText.text = "앱 이탈 0회 / 0.0초\n패널티 없음";
+
         if (unlockedElementRoot != null)
             unlockedElementRoot.SetActive(false);
+    }
+
+    private string BuildExitPenaltyText(
+    FocusSessionResult result,
+    RewardResultData reward
+)
+    {
+        if (result == null)
+            return "";
+
+        if (reward == null)
+            return $"앱 이탈: {result.exitCount}회 / {result.totalExitSeconds:F1}초";
+
+        if (!reward.finalSuccess)
+        {
+            if (reward.failReasonCode == "LongExit")
+            {
+                return
+                    $"앱 이탈 시간이 {result.totalExitSeconds:F1}초로 180초를 넘어 " +
+                    "세션 실패로 처리되었습니다.";
+            }
+
+            if (!string.IsNullOrEmpty(reward.failReasonMessage))
+                return reward.failReasonMessage;
+
+            return $"앱 이탈: {result.exitCount}회 / {result.totalExitSeconds:F1}초";
+        }
+
+        if (reward.hasExitPenalty)
+        {
+            int percent = Mathf.RoundToInt(reward.rewardMultiplier * 100f);
+
+            return
+                $"앱 이탈 {result.exitCount}회 / {result.totalExitSeconds:F1}초\n" +
+                $"보상 {percent}% 적용";
+        }
+
+        return
+            $"앱 이탈 {result.exitCount}회 / {result.totalExitSeconds:F1}초\n" +
+            "패널티 없음";
     }
 }
